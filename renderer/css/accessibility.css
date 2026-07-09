@@ -1,0 +1,139 @@
+/* Skularis Alpha 0.02.03 — Barrierefreiheit (WCAG AA) */
+
+/* === Screenreader-Only (visuell versteckt) === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* === Globaler Fokus-Ring (alle fokussierbaren Elemente) === */
+*:focus-visible {
+  outline: 2px solid var(--db-border-focus);
+  outline-offset: 2px;
+}
+
+/* Elemente die eigene Fokus-Stile haben */
+.db-btn:focus-visible,
+.db-input:focus-visible,
+.db-textarea:focus-visible,
+.db-select:focus-visible,
+.db-stepper__btn:focus-visible,
+.db-tabs__tab:focus-visible,
+.db-dialog__close:focus-visible,
+.db-tabs__close:focus-visible,
+.db-list__item:focus-visible,
+.db-header__btn:focus-visible {
+  outline: none;
+}
+
+/* === Skip-Navigation (optional, fuer Tastatur-Nutzer) === */
+.db-skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--db-space-lg);
+  background: var(--db-selection-bg);
+  color: #fff;
+  padding: var(--db-space-sm) var(--db-space-lg);
+  border-radius: var(--db-radius-sm);
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  z-index: 9999;
+  transition: top var(--db-transition-fast);
+}
+.db-skip-link:focus {
+  top: var(--db-space-sm);
+}
+
+/* === Zeilen-Highlight bei Pfeil-Navigation === */
+.db-row[aria-current="true"] {
+  border-color: var(--db-accent-cyan);
+  box-shadow: var(--db-focus-glow);
+}
+
+/* === Selektions-Farben === */
+::selection {
+  background: var(--db-selection-bg);
+  color: var(--db-selection-fg);
+}
+
+/* === Hoher Kontrast (Windows High Contrast Mode) === */
+@media (forced-colors: active) {
+  .db-row,
+  .db-btn,
+  .db-input,
+  .db-textarea,
+  .db-select,
+  .db-tabs__tab,
+  .db-dialog {
+    border: 1px solid ButtonText;
+  }
+
+  .db-tabs__tab[aria-selected="true"] {
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .db-btn--primary {
+    background: Highlight;
+    color: HighlightText;
+    border-color: Highlight;
+  }
+
+  .db-row--active,
+  .db-row:focus-within {
+    border-color: Highlight;
+  }
+
+  .db-value {
+    color: Highlight;
+  }
+
+  *:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}
+
+/* === Reduzierte Bewegung === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0ms !important;
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* === Touch-Target-Groesse (Mindestens 44x44px) === */
+.db-stepper__btn,
+.db-tabs__tab,
+.db-header__btn {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* === Fokus-Falle-Indikator (visuell, waehrend Dialog offen) === */
+body.dialog-open > *:not(dialog):not(.db-dialog) {
+  pointer-events: none;
+}
+
+/* === Aria-Live-Regionen (immer versteckt, nur fuer SR) === */
+#sr-live,
+#sr-polite,
+#sr-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

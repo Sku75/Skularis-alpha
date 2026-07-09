@@ -1,0 +1,109 @@
+/* Skularistool — Bildschirm-Menüs (Startbildschirm, Charakterverwaltung, ...) */
+
+.screen {
+  outline: none;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.db-menu {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.db-menu__title {
+  font-size: calc(2rem + var(--db-font-offset, 0px));
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.db-menu__sub {
+  font-size: calc(1.05rem + var(--db-font-offset, 0px));
+  opacity: 0.85;
+  margin: -0.5rem 0 0.5rem;
+}
+
+.db-menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.db-menu__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  font-size: calc(1.2rem + var(--db-font-offset, 0px));
+  line-height: 1.35;
+}
+
+.db-menu__item .db-menu__hint {
+  display: block;
+  font-size: calc(0.9rem + var(--db-font-offset, 0px));
+  opacity: 0.7;
+  margin-top: 0.2rem;
+  font-weight: 400;
+}
+
+.db-menu__empty {
+  font-size: calc(1.1rem + var(--db-font-offset, 0px));
+  opacity: 0.85;
+  padding: 0.5rem 0 1rem;
+}
+
+/* Fokus-Sichtbarkeit für Sehende (ergänzt accessibility.css) */
+.db-menu__item:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* --- Editor --- */
+.ed-bereich { gap: 0.6rem; }
+
+.ed-abschnitt {
+  font-size: calc(1.6rem + var(--db-font-offset, 0px));
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.ed-zeile,
+.ed-info,
+.ed-feld {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  font-size: calc(1.15rem + var(--db-font-offset, 0px));
+  border-radius: 8px;
+}
+
+.ed-zeile { cursor: default; }
+.ed-info { opacity: 0.85; font-size: calc(1rem + var(--db-font-offset, 0px)); }
+
+.ed-zeile:focus-visible,
+.ed-info:focus-visible,
+.ed-feld input:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+.ed-feld { flex-direction: column; align-items: stretch; gap: 0.35rem; }
+.ed-feld__label { font-weight: 600; }
+.ed-feld .db-input { width: 100%; padding: 0.6rem 0.8rem; font-size: inherit; }
+
+.ed-aktion {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.85rem 1rem;
+  font-size: calc(1.15rem + var(--db-font-offset, 0px));
+}

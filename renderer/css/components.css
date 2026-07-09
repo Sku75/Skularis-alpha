@@ -1,0 +1,355 @@
+/* Skularis Alpha 0.02.03 — Komponenten (Buttons, Inputs, Stepper, Select) */
+
+/* === Buttons === */
+.db-btn {
+  background: var(--db-bg-surface);
+  color: var(--db-text-primary);
+  border: 1px solid var(--db-border-medium);
+  border-radius: var(--db-radius-sm);
+  padding: var(--db-space-sm) var(--db-space-lg);
+  font-family: var(--db-font-family);
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  cursor: pointer;
+  transition: background var(--db-transition), border-color var(--db-transition),
+              transform 80ms ease, box-shadow var(--db-transition), color var(--db-transition);
+  outline: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--db-space-xs);
+  white-space: nowrap;
+}
+.db-btn:hover {
+  background: var(--db-bg-hover);
+  border-color: var(--db-border-strong);
+}
+.db-btn:active {
+  background: var(--db-bg-active);
+  transform: scale(0.98);
+}
+.db-btn:focus-visible {
+  box-shadow: var(--db-focus-ring);
+}
+.db-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Primaer-Button (Doppel-Klasse fuer hoehere Spezifitaet) */
+.db-btn.db-btn--primary {
+  background: var(--db-selection-bg);
+  border-color: var(--db-accent-cyan);
+  color: #fff;
+}
+.db-btn.db-btn--primary:hover {
+  background: #0066bb;
+}
+.db-btn.db-btn--primary:active {
+  background: #004488;
+}
+
+/* Gefahr-Button (Doppel-Klasse fuer hoehere Spezifitaet) */
+.db-btn.db-btn--danger {
+  border-color: var(--db-error);
+  color: var(--db-error);
+}
+.db-btn.db-btn--danger:hover {
+  background: var(--db-error-bg);
+}
+
+/* Klein-Button */
+.db-btn--sm {
+  padding: var(--db-space-xs) var(--db-space-sm);
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+}
+
+/* === Textfelder === */
+.db-input {
+  background: var(--db-bg-surface);
+  color: var(--db-text-primary);
+  border: 1px solid var(--db-border-medium);
+  border-radius: var(--db-radius-sm);
+  padding: var(--db-space-sm) var(--db-space-md);
+  font-family: var(--db-font-family);
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  caret-color: var(--db-text-primary);
+  outline: none;
+  transition: border-color var(--db-transition);
+  width: 100%;
+}
+.db-input:focus {
+  border-color: var(--db-border-focus);
+  box-shadow: var(--db-focus-ring);
+}
+.db-input::placeholder {
+  color: var(--db-text-disabled);
+}
+.db-input:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.db-input--error {
+  border-color: var(--db-error);
+}
+
+/* Textarea */
+.db-textarea {
+  background: var(--db-bg-surface);
+  color: var(--db-text-primary);
+  border: 1px solid var(--db-border-medium);
+  border-radius: var(--db-radius-sm);
+  padding: var(--db-space-sm) var(--db-space-md);
+  font-family: var(--db-font-family);
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  caret-color: var(--db-text-primary);
+  outline: none;
+  transition: border-color var(--db-transition);
+  width: 100%;
+  resize: vertical;
+  min-height: 60px;
+  line-height: 1.5;
+}
+.db-textarea:focus {
+  border-color: var(--db-border-focus);
+  box-shadow: var(--db-focus-ring);
+}
+
+/* === Dropdown / Select === */
+.db-select {
+  background: var(--db-bg-surface);
+  color: var(--db-text-primary);
+  border: 1px solid var(--db-border-medium);
+  border-radius: var(--db-radius-sm);
+  padding: var(--db-space-sm) var(--db-space-md);
+  padding-right: var(--db-space-xl);
+  font-family: var(--db-font-family);
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  outline: none;
+  cursor: pointer;
+  transition: border-color var(--db-transition);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23b0b8cc' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+.db-select:focus {
+  border-color: var(--db-border-focus);
+  box-shadow: var(--db-focus-ring);
+}
+.db-select option {
+  background: var(--db-bg-elevated);
+  color: var(--db-text-primary);
+}
+
+/* === Stepper [-] Wert [+] === */
+.db-stepper {
+  display: flex;
+  align-items: center;
+  gap: var(--db-space-sm);
+}
+.db-stepper__btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--db-bg-surface);
+  border: 1px solid var(--db-border-medium);
+  border-radius: var(--db-radius-sm);
+  color: var(--db-text-primary);
+  font-weight: 700;
+  font-size: calc(var(--db-font-size-lg) + var(--db-font-offset));
+  cursor: pointer;
+  transition: all var(--db-transition);
+  outline: none;
+  flex-shrink: 0;
+}
+.db-stepper__btn:hover {
+  background: var(--db-bg-hover);
+  border-color: var(--db-border-strong);
+}
+.db-stepper__btn:active {
+  transform: scale(0.95);
+}
+.db-stepper__btn:focus-visible {
+  box-shadow: var(--db-focus-ring);
+}
+.db-stepper__btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+}
+.db-stepper__value {
+  min-width: 36px;
+  text-align: center;
+  font-size: calc(var(--db-font-size-lg) + var(--db-font-offset));
+  font-weight: 700;
+  color: var(--db-accent-blue);
+}
+
+/* === Checkbox (Custom) === */
+.db-checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--db-space-sm);
+  cursor: pointer;
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  color: var(--db-text-primary);
+}
+.db-checkbox__input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--db-accent-cyan);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.db-checkbox__input:focus-visible {
+  outline: 2px solid var(--db-border-focus);
+  outline-offset: 2px;
+}
+
+/* === Range Slider === */
+.db-range {
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--db-border-medium);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  accent-color: var(--db-accent-cyan);
+}
+.db-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--db-accent-cyan);
+  border: 2px solid var(--db-bg-deep);
+  cursor: pointer;
+}
+.db-range:focus-visible {
+  box-shadow: var(--db-focus-ring);
+}
+
+/* === Badge / Tag === */
+.db-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--db-space-sm);
+  border-radius: var(--db-radius-pill);
+  font-size: calc(var(--db-font-size-xs) + var(--db-font-offset));
+  font-weight: 600;
+  background: var(--db-bg-active);
+  color: var(--db-text-secondary);
+  border: 1px solid var(--db-border-subtle);
+}
+.db-badge--ap {
+  background: rgba(0, 85, 170, 0.2);
+  color: var(--db-accent-cyan);
+  border-color: rgba(0, 170, 255, 0.3);
+}
+.db-badge--gold {
+  background: rgba(200, 169, 110, 0.15);
+  color: var(--db-gold);
+  border-color: rgba(200, 169, 110, 0.3);
+}
+.db-badge--error {
+  background: var(--db-error-bg);
+  color: var(--db-error);
+  border-color: rgba(255, 68, 68, 0.3);
+}
+
+/* === Tooltip (CSS-only) === */
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--db-space-xs) var(--db-space-sm);
+  background: var(--db-bg-active);
+  color: var(--db-text-primary);
+  border: 1px solid var(--db-border-medium);
+  border-radius: var(--db-radius-sm);
+  font-size: calc(var(--db-font-size-xs) + var(--db-font-offset));
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--db-transition-fast);
+  z-index: 100;
+}
+[data-tooltip]:hover::after,
+[data-tooltip]:focus::after {
+  opacity: 1;
+}
+
+/* === Listbox / Scrollbare Liste === */
+.db-list {
+  background: var(--db-bg-surface);
+  border: 1px solid var(--db-border-medium);
+  border-radius: var(--db-radius-sm);
+  max-height: 200px;
+  overflow-y: auto;
+}
+.db-list__item {
+  padding: var(--db-space-sm) var(--db-space-md);
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  color: var(--db-text-primary);
+  cursor: pointer;
+  transition: background var(--db-transition-fast);
+}
+.db-list__item:hover {
+  background: var(--db-bg-hover);
+}
+.db-list__item--selected {
+  background: var(--db-selection-bg);
+  color: var(--db-selection-fg);
+}
+.db-list__item:focus-visible {
+  box-shadow: inset var(--db-focus-ring);
+  outline: none;
+}
+
+/* === AP-Anzeige (Konto-Zeile) === */
+.db-ap-display {
+  display: flex;
+  align-items: center;
+  gap: var(--db-space-lg);
+  padding: var(--db-space-md) var(--db-space-lg);
+  background: var(--db-tube-gradient);
+  border: 1px solid var(--db-border-subtle);
+  border-radius: var(--db-radius-md);
+}
+.db-ap-display__label {
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+  color: var(--db-text-secondary);
+}
+.db-ap-display__value {
+  font-size: calc(var(--db-font-size-xl) + var(--db-font-offset));
+  font-weight: 700;
+}
+.db-ap-display__value--positive { color: var(--db-success); }
+.db-ap-display__value--negative { color: var(--db-error); }
+.db-ap-display__value--neutral  { color: var(--db-accent-blue); }
+
+/* === Suchfeld === */
+.db-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.db-search__icon {
+  position: absolute;
+  left: var(--db-space-sm);
+  color: var(--db-text-disabled);
+  pointer-events: none;
+  font-size: 14px;
+}
+.db-search__input {
+  padding-left: var(--db-space-xl);
+}

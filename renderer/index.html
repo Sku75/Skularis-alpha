@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skularis</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/design-tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/dark-bubble.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dialogs.css">
+  <link rel="stylesheet" href="css/accessibility.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/skularistool.css">
+</head>
+<body>
+  <!-- Screenreader Live-Regionen -->
+  <div id="sr-live" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
+  <div id="sr-polite" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+  <div id="sr-status" role="status" aria-live="polite" class="sr-only"></div>
+
+  <!-- Kopfzeile mit Barrierefreiheits-Box (oben rechts) -->
+  <header class="db-header" role="banner">
+    <div class="db-header__left">
+      <h1 class="db-header__title">SKULARIS</h1>
+    </div>
+    <div class="db-header__right" role="group" aria-label="Barrierefreiheit: Sound und Schrift">
+      <label class="db-header__volume-label" for="volume-slider">Lautstärke:</label>
+      <input type="range" id="volume-slider" class="db-header__volume"
+             min="0" max="100" value="80" aria-label="Lautstärke">
+      <span id="volume-display" class="db-header__volume-value">80</span>
+      <button id="btn-sprache-toggle" class="db-header__btn" aria-label="Sprachausgabe umschalten">
+        <span class="db-header__btn-icon" aria-hidden="true">&#x1F50A;</span>
+        <span id="sprache-status-text">Sprache an</span>
+      </button>
+      <button id="btn-font-plus" class="db-header__btn" aria-label="Schrift vergrößern">A+</button>
+      <button id="btn-font-minus" class="db-header__btn" aria-label="Schrift verkleinern">A−</button>
+    </div>
+  </header>
+
+  <!-- Hauptbereich: Bildschirme werden hier dynamisch gerendert -->
+  <main id="app-content" class="db-main" role="main" aria-label="Hauptinhalt"></main>
+
+  <!-- Statusleiste -->
+  <footer class="db-footer" role="contentinfo">
+    <div id="status-bar" class="db-status">
+      <span id="status-text">Bereit.</span>
+    </div>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

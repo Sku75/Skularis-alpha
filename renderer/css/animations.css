@@ -1,0 +1,167 @@
+/* Skularis Alpha 0.02.03 — Animationen (Dezent + Elegant) */
+
+/* === Zeilen-Wechsel Highlight (200ms Ueberblendung) === */
+.db-row {
+  transition:
+    border-color var(--db-transition),
+    box-shadow var(--db-transition),
+    background var(--db-transition);
+}
+
+/* === Button-Feedback (Eindruecken) === */
+.db-btn {
+  transition:
+    background var(--db-transition),
+    border-color var(--db-transition),
+    transform 80ms ease,
+    box-shadow var(--db-transition);
+}
+.db-btn:active {
+  transform: scale(0.98);
+}
+.db-stepper__btn {
+  transition:
+    background var(--db-transition),
+    border-color var(--db-transition),
+    transform 80ms ease,
+    box-shadow var(--db-transition);
+}
+.db-stepper__btn:active {
+  transform: scale(0.95);
+}
+
+/* === Tab-Wechsel (sanftes Einblenden) === */
+.db-panel {
+  animation: none;
+}
+.db-panel--active {
+  animation: db-fade-in var(--db-transition) ease-out;
+}
+@keyframes db-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* === Dialog Ein-/Ausblenden === */
+.db-dialog[open] {
+  animation: db-dialog-in var(--db-transition-slow) ease-out;
+}
+@keyframes db-dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+.db-dialog::backdrop {
+  animation: db-backdrop-in var(--db-transition-slow) ease-out;
+}
+@keyframes db-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* === Startbildschirm Titel-Effekt === */
+.db-start__title {
+  animation: db-title-in 600ms ease-out;
+}
+@keyframes db-title-in {
+  from {
+    opacity: 0;
+    letter-spacing: 20px;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 8px;
+  }
+}
+.db-start__separator {
+  animation: db-separator-in 800ms ease-out;
+}
+@keyframes db-separator-in {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 200px;
+    opacity: 1;
+  }
+}
+.db-start__center > *:not(.db-start__title):not(.db-start__separator) {
+  animation: db-content-in 400ms ease-out;
+  animation-fill-mode: both;
+}
+.db-start__subtitle     { animation-delay: 200ms; }
+.db-start__action       { animation-delay: 400ms; }
+.db-start__tip          { animation-delay: 600ms; }
+.db-start__welcome      { animation-delay: 700ms; }
+@keyframes db-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Fokus-Ring Pulsieren (dezent, nur 1x) === */
+@keyframes db-focus-pulse {
+  0%   { box-shadow: 0 0 0 2px var(--db-border-focus); }
+  50%  { box-shadow: 0 0 0 2px var(--db-border-focus), 0 0 8px rgba(0, 170, 255, 0.3); }
+  100% { box-shadow: 0 0 0 2px var(--db-border-focus); }
+}
+
+/* === Wert-Aenderung Flash (kurzer Highlight) === */
+.db-value--changed {
+  animation: db-value-flash 300ms ease-out;
+}
+@keyframes db-value-flash {
+  0%   { color: #ffffff; text-shadow: 0 0 8px rgba(68, 221, 255, 0.5); }
+  100% { color: var(--db-accent-blue); text-shadow: none; }
+}
+
+/* === AP-Bezahlen Animation === */
+.db-ap--paid {
+  animation: db-ap-paid 400ms ease-out;
+}
+@keyframes db-ap-paid {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(0.95); }
+  100% { transform: scale(1); }
+}
+
+/* === Zeile entfernt (slide out) === */
+.db-row--removing {
+  animation: db-row-remove 200ms ease-in forwards;
+}
+@keyframes db-row-remove {
+  to {
+    opacity: 0;
+    transform: translateX(-20px);
+    max-height: 0;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+  }
+}
+
+/* === Zeile hinzugefuegt (slide in) === */
+.db-row--adding {
+  animation: db-row-add 200ms ease-out;
+}
+@keyframes db-row-add {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

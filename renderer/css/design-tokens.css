@@ -1,0 +1,103 @@
+/* Skularis Alpha 0.02.03 — Dark Bubble Elegant Design Tokens */
+:root {
+  color-scheme: dark;
+
+  /* === Base Palette === */
+  --db-bg-deep:        #000000;
+  --db-bg-primary:     #0a0a0a;
+  --db-bg-elevated:    #111111;
+  --db-bg-surface:     #1a1a1a;
+  --db-bg-hover:       #1f1f1f;
+  --db-bg-active:      #282828;
+
+  /* === Tube/Row Gradient (Cylindrical 3D) === */
+  --db-tube-edge:      #0c0c0c;
+  --db-tube-center:    #1a1a1a;
+  --db-tube-highlight: #222222;
+  --db-tube-gradient:  linear-gradient(180deg,
+    var(--db-tube-edge) 0%,
+    var(--db-tube-center) 35%,
+    var(--db-tube-highlight) 50%,
+    var(--db-tube-center) 65%,
+    var(--db-tube-edge) 100%);
+  --db-tube-active-gradient: linear-gradient(180deg,
+    #101018 0%,
+    #1c1c28 35%,
+    #262636 50%,
+    #1c1c28 65%,
+    #101018 100%);
+
+  /* === Text Colors (Starlight Tint) === */
+  --db-text-primary:   #e8f0ff;
+  --db-text-secondary: #b0b8cc;
+  --db-text-disabled:  #606878;
+  --db-text-stamped:   #d0d8ea;
+  --db-text-glow:      rgba(200, 220, 255, 0.15);
+
+  /* === Accent Colors === */
+  --db-gold:           #c8a96e;
+  --db-gold-dim:       #8a7548;
+  --db-accent-blue:    #44ddff;
+  --db-accent-cyan:    #00aaff;
+  --db-selection-bg:   #0055aa;
+  --db-selection-fg:   #ffffff;
+
+  /* === Semantic Colors === */
+  --db-success:        #44cc66;
+  --db-warning:        #ff8800;
+  --db-error:          #ff4444;
+  --db-error-bg:       #2a1111;
+  --db-stumm-bg:       #331111;
+
+  /* === Borders === */
+  --db-border-subtle:  #181818;
+  --db-border-medium:  #2a2a2a;
+  --db-border-strong:  #444444;
+  --db-border-focus:   #00aaff;
+  --db-border-white:   #ffffff;
+
+  /* === Header/Footer Glossy === */
+  --db-header-bg: linear-gradient(180deg,
+    #2a2a2a 0%, #222222 40%, #1a1a1a 100%);
+  --db-header-highlight: rgba(255, 255, 255, 0.06);
+  --db-footer-bg: linear-gradient(0deg,
+    #0a0a0a 0%, #161616 100%);
+
+  /* === Typography === */
+  --db-font-family:     'Segoe UI', system-ui, -apple-system, sans-serif;
+  --db-font-mono:       'Consolas', 'Courier New', monospace;
+  --db-font-size-xs:    11px;
+  --db-font-size-sm:    12px;
+  --db-font-size-base:  14px;
+  --db-font-size-lg:    16px;
+  --db-font-size-xl:    20px;
+  --db-font-size-h2:    18px;
+  --db-font-size-h1:    28px;
+  --db-font-size-title: 48px;
+
+  /* === Spacing === */
+  --db-space-xs: 4px;
+  --db-space-sm: 8px;
+  --db-space-md: 12px;
+  --db-space-lg: 16px;
+  --db-space-xl: 24px;
+  --db-space-2xl: 32px;
+
+  /* === Radius === */
+  --db-radius-sm: 4px;
+  --db-radius-md: 6px;
+  --db-radius-lg: 10px;
+  --db-radius-pill: 20px;
+
+  /* === Transitions === */
+  --db-transition-fast: 120ms ease;
+  --db-transition: 200ms ease;
+  --db-transition-slow: 350ms ease;
+
+  /* === Focus Ring === */
+  --db-focus-ring: 0 0 0 2px var(--db-border-focus);
+  --db-focus-glow: 0 0 8px rgba(0, 170, 255, 0.3);
+
+  /* === Font Offset (user preference, runtime-adjustable) === */
+  --db-font-offset: 0px;
+}

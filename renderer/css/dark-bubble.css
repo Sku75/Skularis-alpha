@@ -1,0 +1,252 @@
+/* Skularis Alpha 0.02.03 — Dark Bubble Elegant: Kern-Komponenten */
+
+/* === Zylindrische Rohr-Zeile (Signature Element) === */
+.db-row {
+  background: var(--db-tube-gradient);
+  border: 1px solid var(--db-border-subtle);
+  border-radius: var(--db-radius-md);
+  padding: var(--db-space-sm) var(--db-space-lg);
+  margin-bottom: 2px;
+  transition: border-color var(--db-transition), box-shadow var(--db-transition);
+  display: flex;
+  align-items: center;
+  gap: var(--db-space-md);
+  min-height: 40px;
+  position: relative;
+}
+.db-row:hover {
+  border-color: var(--db-border-medium);
+}
+.db-row--active,
+.db-row:focus,
+.db-row:focus-within {
+  background: var(--db-tube-active-gradient);
+  border-color: var(--db-border-focus);
+  box-shadow: var(--db-focus-ring);
+  outline: none;
+}
+.db-row--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Hohe Zeilen (Textboxen) — Woelbung nur oben/unten */
+.db-row--tall {
+  min-height: 80px;
+  align-items: flex-start;
+  background: linear-gradient(180deg,
+    var(--db-tube-edge) 0%,
+    var(--db-tube-center) 8%,
+    var(--db-tube-highlight) 12%,
+    var(--db-tube-center) 88%,
+    var(--db-tube-highlight) 92%,
+    var(--db-tube-edge) 100%);
+}
+
+/* === Eingestanzte Schrift (Stamped Text) === */
+.db-text-stamped {
+  color: var(--db-text-stamped);
+  text-shadow:
+    0 -1px 0 rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* === Label / Wert / Info === */
+.db-label {
+  color: var(--db-text-secondary);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.03);
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  flex-shrink: 0;
+}
+.db-value {
+  color: var(--db-accent-blue);
+  font-weight: 600;
+  font-size: calc(var(--db-font-size-lg) + var(--db-font-offset));
+}
+.db-value--gold {
+  color: var(--db-gold);
+}
+.db-value--error {
+  color: var(--db-error);
+}
+.db-value--success {
+  color: var(--db-success);
+}
+
+/* === Zeilen-Layout-Varianten === */
+.db-row__label {
+  flex: 0 0 auto;
+  min-width: 140px;
+  color: var(--db-text-secondary);
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+}
+.db-row__content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--db-space-sm);
+}
+.db-row__info {
+  margin-left: auto;
+  color: var(--db-text-secondary);
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+}
+
+/* === Startbildschirm === */
+.db-start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+  background: var(--db-bg-deep);
+}
+.db-start__watermark {
+  position: absolute;
+  font-size: 120px;
+  font-weight: 900;
+  letter-spacing: 20px;
+  text-transform: uppercase;
+  color: rgba(200, 169, 110, 0.03);
+  user-select: none;
+  pointer-events: none;
+}
+.db-start__center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--db-space-lg);
+  z-index: 1;
+}
+.db-start__title {
+  font-size: calc(var(--db-font-size-title) + var(--db-font-offset));
+  font-weight: 900;
+  color: var(--db-gold);
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow:
+    0 -1px 0 rgba(0, 0, 0, 0.8),
+    0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 20px rgba(200, 169, 110, 0.15);
+}
+.db-start__subtitle {
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  color: var(--db-text-secondary);
+  letter-spacing: 1px;
+}
+.db-start__separator {
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--db-gold-dim) 50%,
+    transparent 100%);
+  margin: var(--db-space-sm) 0;
+}
+.db-start__action {
+  min-width: 280px;
+}
+.db-start__tip {
+  font-size: calc(var(--db-font-size-xs) + var(--db-font-offset));
+  color: var(--db-text-disabled);
+  margin-top: var(--db-space-md);
+}
+.db-start__welcome {
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+  color: var(--db-text-secondary);
+  max-width: 500px;
+  text-align: center;
+  line-height: 1.6;
+}
+.db-start__version {
+  font-size: calc(var(--db-font-size-xs) + var(--db-font-offset));
+  color: var(--db-text-disabled);
+  margin-top: var(--db-space-md);
+}
+
+/* === Charakter-Ansicht === */
+.db-charakter {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+.db-charakter__content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--db-space-lg);
+  background: var(--db-bg-primary);
+}
+
+/* === Abschnitts-Header (innerhalb Reiter) === */
+.db-section {
+  margin-bottom: var(--db-space-lg);
+}
+.db-section__title {
+  font-size: calc(var(--db-font-size-h2) + var(--db-font-offset));
+  font-weight: 700;
+  color: var(--db-gold);
+  letter-spacing: 1px;
+  padding-bottom: var(--db-space-xs);
+  border-bottom: 1px solid var(--db-border-subtle);
+  margin-bottom: var(--db-space-sm);
+}
+.db-section__subtitle {
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+  color: var(--db-text-secondary);
+  margin-bottom: var(--db-space-sm);
+}
+
+/* === Gruppen-Container === */
+.db-group {
+  background: var(--db-bg-elevated);
+  border: 1px solid var(--db-border-subtle);
+  border-radius: var(--db-radius-lg);
+  padding: var(--db-space-md);
+  margin-bottom: var(--db-space-md);
+}
+.db-group__header {
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  font-weight: 600;
+  color: var(--db-text-primary);
+  margin-bottom: var(--db-space-sm);
+  padding-bottom: var(--db-space-xs);
+  border-bottom: 1px solid var(--db-border-subtle);
+}
+
+/* === Stumm / Muted-Zustand (z.B. gesperrte Felder) === */
+.db-muted {
+  background: var(--db-stumm-bg);
+  border-color: var(--db-border-subtle);
+}
+.db-muted .db-label,
+.db-muted .db-value {
+  color: var(--db-text-disabled);
+}
+
+/* === Zwei-Spalten-Layout === */
+.db-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--db-space-md);
+}
+@media (max-width: 800px) {
+  .db-columns { grid-template-columns: 1fr; }
+}
+
+/* === Leer-Zustand === */
+.db-empty {
+  text-align: center;
+  padding: var(--db-space-2xl);
+  color: var(--db-text-disabled);
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+}
+
+/* === Trennlinie === */
+.db-divider {
+  height: 1px;
+  background: var(--db-border-subtle);
+  margin: var(--db-space-md) 0;
+}

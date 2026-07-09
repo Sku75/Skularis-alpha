@@ -1,0 +1,122 @@
+/* Skularis Alpha 0.02.03 — Tab-System (Reiter-Leiste + Panels) */
+
+/* === Tab-Leiste === */
+.db-tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 2px;
+  padding: var(--db-space-xs) var(--db-space-lg);
+  background: transparent;
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+
+/* === Einzelner Tab-Button === */
+.db-tabs__tab {
+  position: relative;
+  padding: var(--db-space-sm) var(--db-space-lg);
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+  font-weight: 500;
+  color: var(--db-text-secondary);
+  background: var(--db-bg-primary);
+  border: 1px solid var(--db-border-subtle);
+  border-bottom: none;
+  border-radius: var(--db-radius-sm) var(--db-radius-sm) 0 0;
+  cursor: pointer;
+  transition: all var(--db-transition);
+  outline: none;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: var(--db-space-xs);
+}
+.db-tabs__tab:hover {
+  background: var(--db-bg-hover);
+  color: var(--db-text-primary);
+}
+
+/* Aktiver Tab */
+.db-tabs__tab[aria-selected="true"] {
+  background: var(--db-bg-elevated);
+  color: var(--db-text-primary);
+  font-weight: 600;
+  border-color: var(--db-border-medium);
+}
+.db-tabs__tab[aria-selected="true"]::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--db-accent-cyan);
+}
+
+/* Fokus */
+.db-tabs__tab:focus-visible {
+  box-shadow: var(--db-focus-ring);
+  z-index: 1;
+}
+
+/* Tab-Shortcut-Hinweis */
+.db-tabs__shortcut {
+  font-size: calc(var(--db-font-size-xs) + var(--db-font-offset));
+  color: var(--db-text-disabled);
+  margin-left: var(--db-space-xs);
+}
+
+/* Schliess-Button fuer Info-Reiter */
+.db-tabs__close {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--db-radius-sm);
+  font-size: 12px;
+  color: var(--db-text-disabled);
+  transition: all var(--db-transition-fast);
+  margin-left: var(--db-space-xs);
+  flex-shrink: 0;
+}
+.db-tabs__close:hover {
+  background: var(--db-error-bg);
+  color: var(--db-error);
+}
+.db-tabs__close:focus-visible {
+  box-shadow: var(--db-focus-ring);
+}
+
+/* === Tab-Panel === */
+.db-panel {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--db-space-lg);
+  background: var(--db-bg-primary);
+}
+.db-panel[aria-hidden="false"],
+.db-panel--active {
+  display: block;
+}
+
+/* Panel-Scroll-Bereich */
+.db-panel__scroll {
+  max-height: 100%;
+  overflow-y: auto;
+  padding-right: var(--db-space-xs);
+}
+
+/* === Tab-Trenner (optisch) === */
+.db-tabs__separator {
+  width: 1px;
+  align-self: stretch;
+  margin: var(--db-space-xs) 0;
+  background: var(--db-border-subtle);
+}
+
+/* === Kein Charakter geladen === */
+.db-tabs--hidden {
+  display: none;
+}

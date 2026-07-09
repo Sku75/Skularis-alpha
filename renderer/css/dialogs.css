@@ -1,0 +1,189 @@
+/* Skularis Alpha 0.02.03 — Modale Dialoge (HTML <dialog> + ARIA) */
+
+/* === Dialog-Grundstil === */
+.db-dialog {
+  background: var(--db-bg-elevated);
+  color: var(--db-text-primary);
+  border: 1px solid var(--db-border-medium);
+  border-radius: var(--db-radius-lg);
+  padding: 0;
+  min-width: 360px;
+  max-width: 560px;
+  max-height: 80vh;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 0 0 1px var(--db-border-subtle);
+  overflow: hidden;
+}
+.db-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* === Dialog-Header === */
+.db-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--db-space-md) var(--db-space-lg);
+  background: linear-gradient(180deg, #1a1a1a, #141414);
+  border-bottom: 1px solid var(--db-border-subtle);
+}
+.db-dialog__title {
+  font-size: calc(var(--db-font-size-lg) + var(--db-font-offset));
+  font-weight: 700;
+  color: var(--db-gold);
+  letter-spacing: 1px;
+}
+.db-dialog__close {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--db-radius-sm);
+  color: var(--db-text-secondary);
+  font-size: 16px;
+  transition: all var(--db-transition-fast);
+}
+.db-dialog__close:hover {
+  background: var(--db-error-bg);
+  color: var(--db-error);
+}
+.db-dialog__close:focus-visible {
+  box-shadow: var(--db-focus-ring);
+}
+
+/* === Dialog-Inhalt === */
+.db-dialog__body {
+  padding: var(--db-space-lg);
+  overflow-y: auto;
+  max-height: calc(80vh - 120px);
+}
+.db-dialog__text {
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  color: var(--db-text-primary);
+  line-height: 1.6;
+  margin-bottom: var(--db-space-md);
+}
+
+/* === Dialog-Formular-Elemente === */
+.db-dialog__field {
+  margin-bottom: var(--db-space-md);
+}
+.db-dialog__label {
+  display: block;
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+  color: var(--db-text-secondary);
+  margin-bottom: var(--db-space-xs);
+}
+.db-dialog__input {
+  width: 100%;
+}
+
+/* === Dialog-Fusszeile === */
+.db-dialog__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--db-space-sm);
+  padding: var(--db-space-md) var(--db-space-lg);
+  border-top: 1px solid var(--db-border-subtle);
+  background: var(--db-bg-primary);
+}
+
+/* === Dialog-Varianten === */
+
+/* Bestaetigung */
+.db-dialog--confirm .db-dialog__body {
+  text-align: center;
+  padding: var(--db-space-xl);
+}
+.db-dialog--confirm .db-dialog__footer {
+  justify-content: center;
+}
+
+/* Warnung */
+.db-dialog--warning .db-dialog__header {
+  border-bottom-color: var(--db-warning);
+}
+.db-dialog--warning .db-dialog__title {
+  color: var(--db-warning);
+}
+
+/* Fehler */
+.db-dialog--error .db-dialog__header {
+  border-bottom-color: var(--db-error);
+}
+.db-dialog--error .db-dialog__title {
+  color: var(--db-error);
+}
+
+/* Gross (z.B. Tastenkombinationen) */
+.db-dialog--wide {
+  min-width: 500px;
+  max-width: 720px;
+}
+
+/* === Auswahl-Dialog (mit Suchfeld + Liste) === */
+.db-dialog__search {
+  margin-bottom: var(--db-space-md);
+}
+.db-dialog__list {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid var(--db-border-subtle);
+  border-radius: var(--db-radius-sm);
+}
+
+/* === Eigenheit-Dialog (3 Felder) === */
+.db-dialog__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--db-space-md);
+}
+
+/* === Tastenkombinationen-Anzeige === */
+.db-shortcuts-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.db-shortcuts-table th {
+  text-align: left;
+  padding: var(--db-space-sm) var(--db-space-md);
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+  color: var(--db-gold);
+  border-bottom: 1px solid var(--db-border-medium);
+  font-weight: 600;
+}
+.db-shortcuts-table td {
+  padding: var(--db-space-xs) var(--db-space-md);
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+  border-bottom: 1px solid var(--db-border-subtle);
+}
+.db-shortcuts-table td:first-child {
+  color: var(--db-accent-blue);
+  font-family: var(--db-font-mono);
+  white-space: nowrap;
+}
+
+/* === Ueber-Dialog === */
+.db-about {
+  text-align: center;
+}
+.db-about__title {
+  font-size: calc(var(--db-font-size-xl) + var(--db-font-offset));
+  font-weight: 900;
+  color: var(--db-gold);
+  letter-spacing: 4px;
+  margin-bottom: var(--db-space-sm);
+}
+.db-about__version {
+  font-size: calc(var(--db-font-size-base) + var(--db-font-offset));
+  color: var(--db-text-secondary);
+  margin-bottom: var(--db-space-md);
+}
+.db-about__info {
+  font-size: calc(var(--db-font-size-sm) + var(--db-font-offset));
+  color: var(--db-text-secondary);
+  line-height: 1.8;
+}

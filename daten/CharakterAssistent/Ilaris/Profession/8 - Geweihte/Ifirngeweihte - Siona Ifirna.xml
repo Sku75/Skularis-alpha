@@ -1,0 +1,214 @@
+<Charakter>
+  <Version>
+    <DatenbankVersion>3</DatenbankVersion>
+    <NutzerDatenbankCRC>0</NutzerDatenbankCRC>
+    <NutzerDatenbankName></NutzerDatenbankName>
+    <Plugins></Plugins>
+  </Version>
+  <Beschreibung>
+    <Name>Siona Ifirna</Name>
+    <Spezies></Spezies>
+    <Status>2</Status>
+    <Kurzbeschreibung>junge, offenherzige Ifirngeweihte die mit ihrem strahlenden Lächeln alle Blicke auf sich zieht</Kurzbeschreibung>
+    <SchiP>2</SchiP>
+    <Finanzen>1</Finanzen>
+    <Heimat>Mittelreich</Heimat>
+    <Eigenheiten>
+      <Eigenheit>Im Dienste der Schwänin</Eigenheit>
+      <Eigenheit>Die Geister, die du riefst...</Eigenheit>
+      <Eigenheit>Meine Heimat ist die Weite</Eigenheit>
+      <Eigenheit>Das Gute im Menschen</Eigenheit>
+    </Eigenheiten>
+  </Beschreibung>
+  <Attribute>
+    <KO>2</KO>
+    <MU>4</MU>
+    <GE>2</GE>
+    <KK>4</KK>
+    <IN>6</IN>
+    <KL>2</KL>
+    <CH>4</CH>
+    <FF>6</FF>
+  </Attribute>
+  <Energien>
+    <AsP wert="0"/>
+    <KaP wert="4"/>
+  </Energien>
+  <Vorteile minderpakt="">
+    <Vorteil>Geweiht I</Vorteil>
+    <Vorteil>Geweiht II</Vorteil>
+    <Vorteil>Geweiht III</Vorteil>
+    <Vorteil>Resistenz gegen Kälte</Vorteil>
+    <Vorteil>Reflexschuss</Vorteil>
+    <Vorteil>Ruhige Hand</Vorteil>
+    <Vorteil>Tradition der Ifirngeweihten I</Vorteil>
+  </Vorteile>
+  <Fertigkeiten>
+    <Fertigkeit name="Handgemenge" wert="2">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Hiebwaffen" wert="0">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Klingenwaffen" wert="0">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Stangenwaffen" wert="0">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Schusswaffen" wert="7">
+      <Talente>
+        <Talent name="Bögen"/>
+      </Talente>
+    </Fertigkeit>
+    <Fertigkeit name="Wurfwaffen" wert="0">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Athletik" wert="3">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Heimlichkeit" wert="5">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Selbstbeherrschung" wert="3">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Wahrnehmung" wert="3">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Autorität" wert="0">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Beeinflussung" wert="0">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Gebräuche" wert="1">
+      <Talente>
+        <Talent name="Gebräuche: Mittelreich"/>
+      </Talente>
+    </Fertigkeit>
+    <Fertigkeit name="Derekunde" wert="3">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Mythenkunde" wert="5">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Magiekunde" wert="0">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Überleben" wert="7">
+      <Talente>
+        <Talent name="Überleben: Hoher Norden"/>
+      </Talente>
+    </Fertigkeit>
+    <Fertigkeit name="Verschlagenheit" wert="0">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Alchemie" wert="0">
+      <Talente/>
+    </Fertigkeit>
+    <Fertigkeit name="Heilkunde" wert="6">
+      <Talente>
+        <Talent name="Wundheilung"/>
+      </Talente>
+    </Fertigkeit>
+    <Fertigkeit name="Handwerk" wert="3">
+      <Talente/>
+    </Fertigkeit>
+    <FreieFertigkeit name="" wert="3"/>
+    <FreieFertigkeit name="Sprache: Garethi" wert="3"/>
+    <FreieFertigkeit name="Schrift: Kusliker Zeichen" wert="3"/>
+    <FreieFertigkeit name="Abrichten" wert="2"/>
+    <FreieFertigkeit name="Schlitten fahren" wert="2"/>
+    <FreieFertigkeit name="Kürschner" wert="1"/>
+  </Fertigkeiten>
+  <Objekte>
+    <Zonensystem>0</Zonensystem>
+    <Rüstungen>
+      <Rüstung name="" be="0" rs="0/0/0/0/0/0"/>
+      <Rüstung name="" be="0" rs="0/0/0/0/0/0"/>
+      <Rüstung name="" be="0" rs="0/0/0/0/0/0"/>
+    </Rüstungen>
+    <Waffen>
+      <Waffe name="Kurzbogen" id="Kurzbogen" würfel="2" würfelSeiten="6" plus="1" eigenschaften="Zweihändig" härte="3" rw="16" kampfstil="Kein Kampfstil" wm="0" typ="Fern" lz="0"/>
+      <Waffe name="Langbogen" id="Langbogen" würfel="2" würfelSeiten="6" plus="3" eigenschaften="Schwer (4), kein Reittier, Zweihändig" härte="3" rw="64" kampfstil="Kein Kampfstil" wm="0" typ="Fern" lz="1"/>
+      <Waffe name="Dolch" id="Dolch (Handgemengewaffen)" würfel="1" würfelSeiten="6" plus="1" eigenschaften="" härte="9" rw="0" kampfstil="Kein Kampfstil" wm="0" typ="Nah"/>
+      <Waffe name="" id="" würfel="0" würfelSeiten="6" plus="0" eigenschaften="" härte="6" rw="0" kampfstil="" wm="0" typ="Nah"/>
+      <Waffe name="" id="" würfel="0" würfelSeiten="6" plus="0" eigenschaften="" härte="6" rw="0" kampfstil="" wm="0" typ="Nah"/>
+      <Waffe name="" id="" würfel="0" würfelSeiten="6" plus="0" eigenschaften="" härte="6" rw="0" kampfstil="" wm="0" typ="Nah"/>
+      <Waffe name="" id="" würfel="0" würfelSeiten="6" plus="0" eigenschaften="" härte="6" rw="0" kampfstil="" wm="0" typ="Nah"/>
+      <Waffe name="" id="" würfel="0" würfelSeiten="6" plus="0" eigenschaften="" härte="6" rw="0" kampfstil="" wm="0" typ="Nah"/>
+    </Waffen>
+    <Ausrüstung/>
+  </Objekte>
+  <ÜbernatürlicheFertigkeiten>
+    <ÜbernatürlicheFertigkeit name="Zwölfgöttlicher Ritus" wert="3" exportieren="1">
+      <Talente>
+        <Talent name="Feuersegen"/>
+        <Talent name="Geburtssegen"/>
+        <Talent name="Grabsegen"/>
+        <Talent name="Heilungssegen"/>
+        <Talent name="Speisesegen"/>
+        <Talent name="Tranksegen"/>
+      </Talente>
+    </ÜbernatürlicheFertigkeit>
+    <ÜbernatürlicheFertigkeit name="Jagd" wert="5" exportieren="1">
+      <Talente>
+        <Talent name="Gemeinschaft treuer Gefährten"/>
+        <Talent name="Mirakel: Wahrnehmung"/>
+        <Talent name="Segnung des Heiligen Mikail"/>
+        <Talent name="Tierempathie"/>
+      </Talente>
+    </ÜbernatürlicheFertigkeit>
+    <ÜbernatürlicheFertigkeit name="Wildnis" wert="3" exportieren="1">
+      <Talente>
+        <Talent name="Geteiltes Leid"/>
+        <Talent name="Mirakel: Heilkunde"/>
+        <Talent name="Sichere Wanderung im Schnee"/>
+        <Talent name="Zuflucht finden"/>
+      </Talente>
+    </ÜbernatürlicheFertigkeit>
+  </ÜbernatürlicheFertigkeiten>
+  <Erfahrung>
+    <Gesamt>2500</Gesamt>
+    <Ausgegeben>2499</Ausgegeben>
+  </Erfahrung>
+  <Notiz/>
+  <Einstellungen>
+    <VoraussetzungenPrüfen>1</VoraussetzungenPrüfen>
+    <Charakterbogen>Standard Charakterbogen</Charakterbogen>
+    <FinanzenAnzeigen>1</FinanzenAnzeigen>
+    <ÜbernatürlichesPDFSpalteAnzeigen>0</ÜbernatürlichesPDFSpalteAnzeigen>
+    <RegelnAnhängen>1</RegelnAnhängen>
+    <RegelnGrösse>0</RegelnGrösse>
+    <RegelnKategorien>V0, V1, M9, V2, V3, M5, W, M8, M0, M1, V4, V5, M2, M4, Z, V6, V7, M3, M7, L, V8, M6, A, M10</RegelnKategorien>
+    <FormularEditierbarkeit>0</FormularEditierbarkeit>
+    <Hausregeln></Hausregeln>
+  </Einstellungen>
+  <BeschreibungDetails>
+    <Kultur/>
+    <Profession></Profession>
+    <Geschlecht></Geschlecht>
+    <Geburtsdatum></Geburtsdatum>
+    <Grösse></Grösse>
+    <Gewicht></Gewicht>
+    <Haarfarbe></Haarfarbe>
+    <Augenfarbe></Augenfarbe>
+    <Titel></Titel>
+    <Aussehen1></Aussehen1>
+    <Aussehen2></Aussehen2>
+    <Aussehen3></Aussehen3>
+    <Aussehen4></Aussehen4>
+    <Aussehen5></Aussehen5>
+    <Aussehen6></Aussehen6>
+    <Hintergrund0></Hintergrund0>
+    <Hintergrund1></Hintergrund1>
+    <Hintergrund2></Hintergrund2>
+    <Hintergrund3></Hintergrund3>
+    <Hintergrund4></Hintergrund4>
+    <Hintergrund5></Hintergrund5>
+    <Hintergrund6></Hintergrund6>
+    <Hintergrund7></Hintergrund7>
+    <Hintergrund8></Hintergrund8>
+  </BeschreibungDetails>
+</Charakter>

@@ -1,0 +1,18 @@
+# Abhängigkeiten (per npm install wiederherstellbar)
+node_modules/
+
+# Lokale Einstellungen
+skularistool_config.json
+
+# Persönliche Charakterdateien (Ordner bleibt, Inhalte privat)
+Charakter-Dateien/*.xml
+Charakter-Dateien/*.html
+
+# Build-Ausgaben
+dist/
+out/
+
+# Temporäres
+*.log
+.DS_Store
+Thumbs.db
