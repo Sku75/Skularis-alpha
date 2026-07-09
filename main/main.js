@@ -5,7 +5,7 @@ const { app, BrowserWindow, Menu, ipcMain, dialog, shell } = require('electron')
 const path = require('path');
 const fs = require('fs');
 
-const VERSION = 'Skularis 0.02';
+const VERSION = 'Skularis 0.03';
 let mainWindow = null;
 
 // Single Instance Lock
@@ -39,6 +39,11 @@ function getAppPfad() {
 // Bibliothek für gespeicherte Charaktere (Sephrasto-.xml)
 function getCharOrdner() {
   return path.join(getBasisPfad(), 'Charakter-Dateien');
+}
+
+// Ordner für Abenteuer-Spielstände (Skularis-eigenes JSON-Format)
+function getAbenteuerOrdner() {
+  return path.join(getBasisPfad(), 'Abenteuer-Daten');
 }
 
 // Verzeichnis mit Regeldaten (datenbank.xml + CharakterAssistent)
@@ -105,5 +110,5 @@ app.on('window-all-closed', () => { app.quit(); });
 // Expose for ipc-handlers
 module.exports = {
   getMainWindow: () => mainWindow,
-  getBasisPfad, getAppPfad, getCharOrdner, getDatenPfad, VERSION,
+  getBasisPfad, getAppPfad, getCharOrdner, getAbenteuerOrdner, getDatenPfad, VERSION,
 };

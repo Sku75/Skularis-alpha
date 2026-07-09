@@ -53,6 +53,13 @@ export function pop() {
   return true;
 }
 
+/** Direkt zum Wurzel-Bildschirm (Hauptmenü) zurück, ein einziges Rendern. */
+export function zuWurzel() {
+  if (_stack.length <= 1) return;
+  _stack.length = 1;
+  _render({ sound: false, restore: false });
+}
+
 export function tiefe() {
   return _stack.length;
 }

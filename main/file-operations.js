@@ -159,6 +159,36 @@ function paketLaden(datenPfad, pfad) {
   return { inhalt: fs.readFileSync(norm, 'utf-8') };
 }
 
+// --- Abenteuer-Spielstände (JSON) ---
+
+function abenteuerListe(ordner) {
+  if (!fs.existsSync(ordner)) return [];
+  return fs.readdirSync(ordner)
+    .filter(f => f.toLowerCase().endsWith('.json'))
+    .map(f => ({ name: f.replace(/\.json$/i, ''), pfad: path.join(ordner, f) }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'de'));
+}
+
+function abenteuerSpeichern(ordner, name, inhalt) {
+  fs.mkdirSync(ordner, { recursive: true });
+  const sicher = String(name || '').replace(/[\\/:*?"<>|]/g, '_').trim() || 'Abenteuer';
+  const pfad = path.join(ordner, sicher + '.json');
+  // Atomar: erst in eine Zwischendatei, dann umbenennen.
+  const tmp = pfad + '.tmp';
+  fs.writeFileSync(tmp, inhalt, 'utf-8');
+  fs.renameSync(tmp, pfad);
+  return { pfad, name: sicher };
+}
+
+function abenteuerLaden(pfad) {
+  return { inhalt: fs.readFileSync(pfad, 'utf-8') };
+}
+
+function abenteuerLoeschen(pfad) {
+  if (pfad && fs.existsSync(pfad)) fs.unlinkSync(pfad);
+  return { ok: true };
+}
+
 module.exports = {
   dateiOeffnenDialog,
   dateiSpeichern,
@@ -174,4 +204,8 @@ module.exports = {
   bibliothekSchreiben,
   paketeListe,
   paketLaden,
+  abenteuerListe,
+  abenteuerSpeichern,
+  abenteuerLaden,
+  abenteuerLoeschen,
 };

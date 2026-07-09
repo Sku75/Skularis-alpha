@@ -19,8 +19,9 @@ export function build() {
       },
       {
         label: 'Abenteuer-Tisch',
-        hint: 'Platzhalter, kommt später',
-        onSelect: () => sprache.sage('Abenteuer-Tisch. Dieser Bereich kommt später.'),
+        hint: 'Abenteuer erstellen oder laden, spielen',
+        onSelect: () => import('./abenteuer-tisch.js').then(m => m.oeffne())
+          .catch(() => sprache.sage('Abenteuer-Tisch wird gerade gebaut.')),
       },
       {
         label: 'Meister-Tisch',

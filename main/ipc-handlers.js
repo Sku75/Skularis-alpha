@@ -90,6 +90,25 @@ ipcMain.handle('skularis:bibliothek-schreiben', (_event, data) => {
   return fileOps.bibliothekSchreiben(getCharOrdner(), data.dateiname, data.inhalt);
 });
 
+// --- Abenteuer-Spielstände ---
+ipcMain.handle('skularis:abenteuer-liste', () => {
+  const { getAbenteuerOrdner } = require('./main');
+  return fileOps.abenteuerListe(getAbenteuerOrdner());
+});
+
+ipcMain.handle('skularis:abenteuer-speichern', (_event, data) => {
+  const { getAbenteuerOrdner } = require('./main');
+  return fileOps.abenteuerSpeichern(getAbenteuerOrdner(), data.name, data.inhalt);
+});
+
+ipcMain.handle('skularis:abenteuer-laden', (_event, data) => {
+  return fileOps.abenteuerLaden(data.pfad);
+});
+
+ipcMain.handle('skularis:abenteuer-loeschen', (_event, data) => {
+  return fileOps.abenteuerLoeschen(data.pfad);
+});
+
 // --- Erschaffungspakete ---
 ipcMain.handle('skularis:pakete-liste', (_event, data) => {
   const { getDatenPfad } = require('./main');

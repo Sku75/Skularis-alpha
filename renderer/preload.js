@@ -23,6 +23,10 @@ contextBridge.exposeInMainWorld('skularis', {
     bibliothekSchreiben:  (data)    => ipcRenderer.invoke('skularis:bibliothek-schreiben', data),
     paketeListe:          (kat)     => ipcRenderer.invoke('skularis:pakete-liste', { kategorie: kat }),
     paketLaden:           (pfad)    => ipcRenderer.invoke('skularis:paket-laden', { pfad }),
+    abenteuerListe:       ()        => ipcRenderer.invoke('skularis:abenteuer-liste'),
+    abenteuerSpeichern:   (data)    => ipcRenderer.invoke('skularis:abenteuer-speichern', data),
+    abenteuerLaden:       (pfad)    => ipcRenderer.invoke('skularis:abenteuer-laden', { pfad }),
+    abenteuerLoeschen:    (pfad)    => ipcRenderer.invoke('skularis:abenteuer-loeschen', { pfad }),
 
     onMenuAktion:       (cb) => ipcRenderer.on('skularis:menu-aktion', (_e, d) => cb(d)),
     onDateiVonCli:      (cb) => ipcRenderer.on('skularis:datei-von-cli', (_e, d) => cb(d)),
