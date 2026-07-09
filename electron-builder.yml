@@ -1,0 +1,21 @@
+appId: one.sku.skularis
+productName: Skularis
+copyright: Skularis Project
+directories:
+  output: dist
+asar: false
+npmRebuild: false
+# Nur zusätzliche Ausschlüsse, der Rest bleibt Standard (App + Prod-Abhängigkeiten).
+files:
+  - "!Charakter-Dateien"
+  - "!Abenteuer-Daten"
+  - "!test"
+  - "!dist"
+  - "!*.bat"
+  - "!*.md"
+  - "!electron-builder.yml"
+win:
+  target: dir
+  # Kein Signieren/exe-Bearbeiten: vermeidet den winCodeSign-Download,
+  # der unter Windows an Symlink-Rechten scheitert (nur Testbuild).
+  signAndEditExecutable: false
