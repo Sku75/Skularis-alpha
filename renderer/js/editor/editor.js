@@ -20,6 +20,7 @@ let char = null;
 
 export function getChar() { return char; }
 export function getDb() { return db; }
+export function setChar(c) { char = c; }
 
 /** Den Editor-Hub anzeigen (vom Assistenten nach der Paketauswahl genutzt). */
 export function oeffneHub() {

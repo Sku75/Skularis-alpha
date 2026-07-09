@@ -107,3 +107,24 @@
   padding: 0.85rem 1rem;
   font-size: calc(1.15rem + var(--db-font-offset, 0px));
 }
+
+/* Detailbereich (für Sehende sichtbar, für Blinde aria-hidden) */
+.ed-detail {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  opacity: 0.9;
+  font-size: calc(1.05rem + var(--db-font-offset, 0px));
+  line-height: 1.4;
+  white-space: pre-wrap;
+}
+.ed-detail:empty { display: none; }
+
+/* Zurück-Schalter: visuell oben links, im Fokus/DOM zuletzt */
+.ed-zurueck {
+  order: -1;
+  align-self: flex-start;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 1rem;
+}

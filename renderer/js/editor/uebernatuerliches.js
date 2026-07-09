@@ -7,7 +7,7 @@ import * as editor from './editor.js';
 import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
 import { wertZeile, aktionZeile, abschnittTitel, infoZeile } from './widgets.js';
-import { auswahlDialog } from '../ui/dialog.js';
+import { auswahlScreen } from '../ui/auswahl-screen.js';
 
 export function uebernatuerlichesScreen() {
   return {
@@ -25,15 +25,24 @@ export function uebernatuerlichesScreen() {
         'Erst die passende übernatürliche Fertigkeit hinzufügen, dann Wert mit Links und Rechts, Talente mit Eingabetaste.'
       ));
 
-      wrap.appendChild(aktionZeile('Übernatürliche Fertigkeit hinzufügen', async () => {
+      wrap.appendChild(aktionZeile('Übernatürliche Fertigkeit hinzufügen', () => {
         const haben = new Set(Object.keys(char.uebernatuerlich));
         const offen = db.uebernat.filter(u => !haben.has(u.name));
-        const eintraege = offen.map(u => ({ label: `${u.name}, Steigerungsfaktor ${u.steigerungsfaktor}`, wert: u.name }));
-        const val = await auswahlDialog({ titel: 'Übernatürliche Fertigkeit', eintraege });
-        if (!val) return;
-        char.uebernatuerlich[val] = { wert: 0, talente: [] };
-        screen.refresh();
-        sprache.sage(`${val} hinzugefügt.`);
+        const eintraege = offen.map(u => ({
+          label: `${u.name}, Steigerungsfaktor ${u.steigerungsfaktor}`,
+          wert: u.name,
+          detail: u.text || '',
+        }));
+        auswahlScreen({
+          titel: 'Übernatürliche Fertigkeit',
+          eintraege,
+          onWahl: (val) => {
+            char.uebernatuerlich[val] = { wert: 0, talente: [] };
+            editor.aktualisiere();
+            screen.refresh();
+            sprache.sage(`${val} hinzugefügt.`);
+          },
+        });
       }, 'Öffnet eine durchsuchbare Liste'));
 
       const namen = Object.keys(char.uebernatuerlich);

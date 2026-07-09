@@ -7,7 +7,8 @@ import * as editor from './editor.js';
 import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
 import { aktionZeile, abschnittTitel, infoZeile } from './widgets.js';
-import { auswahlDialog, zahlDialog, textDialog } from '../ui/dialog.js';
+import { zahlDialog, textDialog } from '../ui/dialog.js';
+import { auswahlScreen } from '../ui/auswahl-screen.js';
 import { pruefeVoraussetzungen } from '../core/regeln.js';
 
 function name(eintrag) { return typeof eintrag === 'string' ? eintrag : eintrag.name; }
@@ -27,36 +28,38 @@ export function vorteileScreen() {
 
       const habenNamen = new Set(char.vorteile.map(name));
 
-      wrap.appendChild(aktionZeile('Vorteil hinzufügen', async () => {
+      wrap.appendChild(aktionZeile('Vorteil hinzufügen', () => {
         const offen = db.vorteile.filter(v => !habenNamen.has(v.name));
         const eintraege = offen.map(v => ({
           label: `${v.name}, ${v.variableKosten ? 'variabel' : v.kosten + ' EP'}`,
           wert: v.name,
+          detail: `${v.text || ''}${v.voraussetzungen ? ` Voraussetzungen: ${v.voraussetzungen}.` : ''}${v.info ? ` ${v.info}` : ''}`.trim(),
         }));
-        const gewaehlt = await auswahlDialog({ titel: 'Vorteil wählen', eintraege });
-        if (!gewaehlt) return;
-        const v = db.vorteilByName[gewaehlt];
-
-        // Voraussetzungen prüfen (nur Hinweis)
-        let hinweis = '';
-        if (!pruefeVoraussetzungen(char, db, v.voraussetzungen)) {
-          hinweis = ' Achtung, Voraussetzung nicht erfüllt.';
-        }
-
-        let neu;
-        if (v.variableKosten) {
-          const kosten = await zahlDialog({ titel: `${v.name}: Kosten`, label: 'EP-Kosten', wert: v.kosten, min: -1000, max: 10000 });
-          if (kosten === null) return;
-          let kommentar = '';
-          if (v.kommentar) kommentar = (await textDialog({ titel: `${v.name}: Kommentar`, label: 'Kommentar (z. B. Umgebung, Gruppe)', wert: '' })) || '';
-          neu = { name: v.name, kosten, kommentar };
-        } else {
-          neu = v.name;
-        }
-        char.vorteile.push(neu);
-        const f2 = editor.aktualisiere();
-        screen.refresh();
-        sprache.sage(`${v.name} hinzugefügt, ${f2} EP frei.${hinweis}`);
+        auswahlScreen({
+          titel: 'Vorteil wählen',
+          eintraege,
+          onWahl: async (gewaehlt) => {
+            const v = db.vorteilByName[gewaehlt];
+            let hinweis = '';
+            if (!pruefeVoraussetzungen(char, db, v.voraussetzungen)) {
+              hinweis = ' Achtung, Voraussetzung nicht erfüllt.';
+            }
+            let neu;
+            if (v.variableKosten) {
+              const kosten = await zahlDialog({ titel: `${v.name}: Kosten`, label: 'EP-Kosten', wert: v.kosten, min: -1000, max: 10000 });
+              if (kosten === null) return;
+              let kommentar = '';
+              if (v.kommentar) kommentar = (await textDialog({ titel: `${v.name}: Kommentar`, label: 'Kommentar (z. B. Umgebung, Gruppe)', wert: '' })) || '';
+              neu = { name: v.name, kosten, kommentar };
+            } else {
+              neu = v.name;
+            }
+            char.vorteile.push(neu);
+            const f2 = editor.aktualisiere();
+            screen.refresh();
+            sprache.sage(`${v.name} hinzugefügt, ${f2} EP frei.${hinweis}`);
+          },
+        });
       }, 'Öffnet eine durchsuchbare Liste aller Vorteile'));
 
       if (char.vorteile.length === 0) {

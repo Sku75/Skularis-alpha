@@ -111,6 +111,34 @@ function registriereShortcuts() {
   shortcuts.registriere('Ctrl++', () => schriftAendern(1), 'Schrift vergrößern');
   shortcuts.registriere('Ctrl+-', () => schriftAendern(-1), 'Schrift verkleinern');
   shortcuts.registriere('Ctrl+0', () => schriftReset(), 'Schrift zurücksetzen');
+
+  // Info zum fokussierten Eintrag vorlesen (überall gleich)
+  shortcuts.registriere('Shift+ArrowDown', async () => {
+    const t = await detailText(document.activeElement);
+    sprache.sage(t || 'Keine weiteren Informationen.');
+  }, 'Info zum Eintrag vorlesen');
+
+  // Info als navigierbares Feld öffnen
+  shortcuts.registriere('Ctrl+I', async () => {
+    const el = document.activeElement;
+    const t = await detailText(el);
+    if (!t) { sprache.sage('Keine weiteren Informationen.'); return; }
+    const titel = (el.querySelector && el.querySelector('.db-menu__label')?.textContent)
+      || el.getAttribute('aria-label') || 'Eintrag';
+    const m = await import('./ui/info-screen.js');
+    m.zeigeInfo(titel, t);
+  }, 'Info-Feld öffnen');
+}
+
+/** Vollinfo eines fokussierten Elements ermitteln (auch verzögert geladene). */
+async function detailText(el) {
+  if (!el) return '';
+  if (el.__detailText !== undefined) return el.__detailText;
+  let d = el.__detail;
+  if (d === undefined) return '';
+  if (typeof d === 'function') { try { d = await d(); } catch { d = ''; } }
+  el.__detailText = (typeof d === 'string' ? d : '');
+  return el.__detailText;
 }
 
 async function schriftAendern(delta) {

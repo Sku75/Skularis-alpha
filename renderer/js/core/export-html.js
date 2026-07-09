@@ -69,7 +69,7 @@ ${ufRows ? `<h2>Übernatürliches</h2><table><thead><tr><th>Fertigkeit</th><th>W
 <h3>Waffen</h3><ul>${waffen}</ul>
 <h3>Rüstungen</h3><ul>${ruestungen}</ul>
 <h3>Gegenstände</h3><ul>${gegenstaende}</ul>
-<p class="meta">Erstellt mit Skularis 0.01 — Regelwerk Ilaris.</p>
+<p class="meta">Erstellt mit Skularis 0.02 — Regelwerk Ilaris.</p>
 </body></html>
 `;
 }

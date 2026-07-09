@@ -7,7 +7,8 @@ import * as editor from './editor.js';
 import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
 import { aktionZeile, abschnittTitel, infoZeile } from './widgets.js';
-import { auswahlDialog, textDialog } from '../ui/dialog.js';
+import { textDialog } from '../ui/dialog.js';
+import { auswahlScreen } from '../ui/auswahl-screen.js';
 
 function waffeAusDb(w) {
   return {
@@ -46,14 +47,22 @@ export function ausruestungScreen() {
       wrap.appendChild(abschnittTitel('Ausrüstung'));
 
       // --- Waffen ---
-      wrap.appendChild(aktionZeile('Waffe hinzufügen', async () => {
-        const eintraege = db.waffen.filter(w => w.name).map(w => ({ label: w.name, wert: w.name }));
-        const val = await auswahlDialog({ titel: 'Waffe wählen', eintraege });
-        if (!val) return;
-        const w = db.waffen.find(x => x.name === val);
-        char.waffen.push(waffeAusDb(w));
-        screen.refresh();
-        sprache.sage(`Waffe ${val} hinzugefügt.`);
+      wrap.appendChild(aktionZeile('Waffe hinzufügen', () => {
+        const eintraege = db.waffen.filter(w => w.name).map(w => ({
+          label: w.name,
+          wert: w.name,
+          detail: `Schaden ${w['würfel'] || 0} W ${w['würfelSeiten'] || 6} plus ${w.plus || 0}. Fertigkeit ${w.fertigkeit || ''}, Talent ${w.talent || ''}.`,
+        }));
+        auswahlScreen({
+          titel: 'Waffe wählen',
+          eintraege,
+          onWahl: (val) => {
+            const w = db.waffen.find(x => x.name === val);
+            char.waffen.push(waffeAusDb(w));
+            screen.refresh();
+            sprache.sage(`Waffe ${val} hinzugefügt.`);
+          },
+        });
       }, 'Aus der Waffen-Datenbank'));
       if (char.waffen.length === 0) wrap.appendChild(infoZeile('Keine Waffen.'));
       for (const w of [...char.waffen]) {
@@ -64,15 +73,23 @@ export function ausruestungScreen() {
       }
 
       // --- Rüstungen ---
-      wrap.appendChild(aktionZeile('Rüstung hinzufügen', async () => {
-        const eintraege = db.ruestungen.filter(r => r.name).map(r => ({ label: r.name, wert: r.name }));
-        const val = await auswahlDialog({ titel: 'Rüstung wählen', eintraege });
-        if (!val) return;
-        const r = db.ruestungen.find(x => x.name === val);
-        char.ruestungen.push(ruestungAusDb(r));
-        editor.aktualisiere();
-        screen.refresh();
-        sprache.sage(`Rüstung ${val} hinzugefügt.`);
+      wrap.appendChild(aktionZeile('Rüstung hinzufügen', () => {
+        const eintraege = db.ruestungen.filter(r => r.name).map(r => ({
+          label: r.name,
+          wert: r.name,
+          detail: `Rüstungsschutz-Zonen ${ruestungAusDb(r).rs}, Behinderung ${ruestungAusDb(r).be}.`,
+        }));
+        auswahlScreen({
+          titel: 'Rüstung wählen',
+          eintraege,
+          onWahl: (val) => {
+            const r = db.ruestungen.find(x => x.name === val);
+            char.ruestungen.push(ruestungAusDb(r));
+            editor.aktualisiere();
+            screen.refresh();
+            sprache.sage(`Rüstung ${val} hinzugefügt.`);
+          },
+        });
       }, 'Aus der Rüstungs-Datenbank'));
       if (char.ruestungen.length === 0) wrap.appendChild(infoZeile('Keine Rüstungen.'));
       for (const r of [...char.ruestungen]) {

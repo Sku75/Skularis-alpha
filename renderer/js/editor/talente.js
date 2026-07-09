@@ -7,7 +7,7 @@ import * as editor from './editor.js';
 import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
 import { aktionZeile, abschnittTitel, infoZeile } from './widgets.js';
-import { auswahlDialog } from '../ui/dialog.js';
+import { auswahlScreen } from '../ui/auswahl-screen.js';
 import { kostenTalent } from '../core/regeln.js';
 
 export function talentScreen(fname, isUeber) {
@@ -34,19 +34,23 @@ export function talentScreen(fname, isUeber) {
 
       wrap.appendChild(aktionZeile(
         `Talent hinzufügen (${offen.length} verfügbar)`,
-        async () => {
+        () => {
           if (!offen.length) { sprache.sage('Keine weiteren Talente verfügbar.'); return; }
-          const eintraege = offen.map(t => {
-            const k = kostenTalent(t, sf, db);
-            return { label: `${t.name}, ${k} EP`, wert: t.name };
+          const eintraege = offen.map(t => ({
+            label: `${t.name}, ${kostenTalent(t, sf, db)} EP`,
+            wert: t.name,
+            detail: (db.talentByName[t.name] && db.talentByName[t.name].text) || '',
+          }));
+          auswahlScreen({
+            titel: `Talent für ${fname}`,
+            eintraege,
+            onWahl: (val) => {
+              eintrag.talente.push(val);
+              const f2 = editor.aktualisiere();
+              screen.refresh();
+              sprache.sage(`${val} hinzugefügt, ${f2} EP frei.`);
+            },
           });
-          const val = await auswahlDialog({ titel: `Talent für ${fname}`, eintraege });
-          if (val) {
-            eintrag.talente.push(val);
-            const f2 = editor.aktualisiere();
-            screen.refresh();
-            sprache.sage(`${val} hinzugefügt, ${f2} EP frei.`);
-          }
         },
         'Öffnet eine durchsuchbare Liste',
       ));
