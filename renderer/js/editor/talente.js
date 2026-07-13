@@ -6,8 +6,9 @@
 import * as editor from './editor.js';
 import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
-import { aktionZeile, abschnittTitel, infoZeile } from './widgets.js';
+import { aktionZeile, abschnittTitel, infoZeile, verbindeDetail } from './widgets.js';
 import { auswahlScreen } from '../ui/auswahl-screen.js';
+import { jaNeinDialog } from '../ui/dialog.js';
 import { kostenTalent } from '../core/regeln.js';
 
 export function talentScreen(fname, isUeber) {
@@ -44,7 +45,8 @@ export function talentScreen(fname, isUeber) {
           auswahlScreen({
             titel: `Talent für ${fname}`,
             eintraege,
-            onWahl: (val) => {
+            onWahl: async (val) => {
+              if (!await jaNeinDialog({ titel: 'Hinzufügen', frage: `${val} wirklich hinzufügen?` })) return;
               eintrag.talente.push(val);
               const f2 = editor.aktualisiere();
               screen.refresh();
@@ -59,15 +61,18 @@ export function talentScreen(fname, isUeber) {
         wrap.appendChild(infoZeile('Noch keine Talente gewählt.'));
       } else {
         for (const tname of [...eintrag.talente]) {
-          wrap.appendChild(aktionZeile(`${tname} — entfernen`, () => {
+          const info = (db.talentByName[tname] && db.talentByName[tname].text) || '';
+          wrap.appendChild(aktionZeile(`${tname} — entfernen`, async () => {
+            if (!await jaNeinDialog({ titel: 'Entfernen', frage: `${tname} wirklich entfernen?` })) return;
             eintrag.talente = eintrag.talente.filter(x => x !== tname);
             const f2 = editor.aktualisiere();
             screen.refresh();
             sprache.sage(`${tname} entfernt, ${f2} EP frei.`);
-          }, 'Talent entfernen'));
+          }, 'Talent entfernen', info));
         }
       }
 
+      verbindeDetail(wrap);
       return wrap;
     },
   };

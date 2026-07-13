@@ -22,6 +22,7 @@ export function wertZeile(o) {
   const row = document.createElement('div');
   row.className = 'db-row ed-zeile';
   row.tabIndex = 0;
+  if (o.detail !== undefined) row.__detail = o.detail;
 
   const text = document.createElement('span');
   text.className = 'ed-zeile__text';
@@ -35,6 +36,9 @@ export function wertZeile(o) {
     row.setAttribute('data-sr-label', t);
     row.dataset.srValue = t;
     row.setAttribute('aria-label', t);
+    // Detail kann vom Wert abhängen (z. B. Probenwert) → Cache verwerfen
+    if (o.detail !== undefined) { row.__detail = o.detail; delete row.__detailText; }
+    row.dispatchEvent(new CustomEvent('detail-refresh', { bubbles: true }));
   };
   render();
 
@@ -67,7 +71,7 @@ export function wertZeile(o) {
 }
 
 /** Reine Info-/Statuszeile (fokussierbar, nur Anzeige). */
-export function infoZeile(text) {
+export function infoZeile(text, detail) {
   const row = document.createElement('div');
   row.className = 'db-row ed-info';
   row.tabIndex = 0;
@@ -75,18 +79,50 @@ export function infoZeile(text) {
   row.setAttribute('data-sr-label', text);
   row.dataset.srValue = text;
   row.setAttribute('aria-label', text);
+  if (detail !== undefined) row.__detail = detail;
   return row;
 }
 
-/** Aktionszeile als Schalter. */
-export function aktionZeile(label, onSelect, hint) {
+/** Aktionszeile als Schalter. Optionales Detail (Shift+Pfeil-runter / Detailbox). */
+export function aktionZeile(label, onSelect, hint, detail) {
   const b = document.createElement('button');
   b.type = 'button';
   b.className = 'db-btn ed-aktion';
   b.textContent = label;
   if (hint) b.setAttribute('aria-label', `${label}. ${hint}`);
+  if (detail !== undefined) b.__detail = detail;
   b.addEventListener('click', () => { sounds.playClick(); onSelect(); });
   return b;
+}
+
+/**
+ * Hängt einen sichtbaren Detailbereich unter einen Wert-Bereich (ed-bereich) und
+ * hält ihn beim Fokuswechsel aktuell. So sehen Sehende dieselbe Zusatzinfo, die
+ * Blinde per Shift+Pfeil-runter hören (element.__detail). aria-hidden = nur visuell.
+ */
+export function verbindeDetail(wrap) {
+  const box = document.createElement('div');
+  box.className = 'ed-detail';
+  box.setAttribute('aria-hidden', 'true');
+  wrap.appendChild(box);
+
+  const aktualisiere = () => {
+    const el = document.activeElement;
+    if (!el || !wrap.contains(el)) { box.textContent = ''; return; }
+    const d = el.__detail;
+    if (d === undefined || d === null) { box.textContent = ''; return; }
+    if (typeof d === 'function') {
+      Promise.resolve().then(() => d()).then((t) => {
+        if (document.activeElement === el) box.textContent = (typeof t === 'string' ? t : '');
+      }).catch(() => { box.textContent = ''; });
+      return;
+    }
+    box.textContent = (typeof d === 'string' ? d : '');
+  };
+
+  wrap.addEventListener('focusin', aktualisiere);
+  wrap.addEventListener('detail-refresh', aktualisiere);
+  return box;
 }
 
 /** Überschrift eines Abschnitts — nur visuell, NVDA bekommt die Ansage per aria-live. */

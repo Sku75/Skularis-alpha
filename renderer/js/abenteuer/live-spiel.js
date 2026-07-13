@@ -7,7 +7,7 @@ import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
 import * as sounds from '../sounds.js';
 import { menuScreen } from '../ui/menu-screen.js';
-import { wertZeile, infoZeile, abschnittTitel } from '../editor/widgets.js';
+import { wertZeile, infoZeile, abschnittTitel, verbindeDetail } from '../editor/widgets.js';
 import { zahlDialog } from '../ui/dialog.js';
 import { auswahlScreen } from '../ui/auswahl-screen.js';
 import { abgeleiteteWerte } from '../core/regeln.js';
@@ -57,21 +57,13 @@ function wuerfeln(anzahl, seiten, mod) {
   for (let i = 0; i < anzahl; i++) wuerfe.push(1 + Math.floor(Math.random() * seiten));
   const summe = wuerfe.reduce((s, n) => s + n, 0) + mod;
   const bez = `${anzahl} W ${seiten}${mod ? (mod > 0 ? ` plus ${mod}` : ` minus ${-mod}`) : ''}`;
+  // Summe nur nennen, wenn ein Modifikator im Spiel ist (z. B. Schadenswurf).
+  const summeText = mod ? `, Summe ${summe}` : '';
   sounds.playClick();
-  protokolliere(a, `Wurf ${bez}: ${wuerfe.join(', ')}, Summe ${summe}.`);
+  protokolliere(a, `Wurf ${bez}: ${wuerfe.join(', ')}${summeText}.`);
   speichere();
-  screen.push(becherScreen(bez, wuerfe, mod, summe));
-}
-
-function becherScreen(bez, wuerfe, mod, summe) {
-  const items = wuerfe.map((r, i) => ({ label: `Würfel ${i + 1}: ${r}`, onSelect: () => {} }));
-  if (mod) items.push({ label: `Modifikator: ${mod > 0 ? 'plus ' : 'minus '}${Math.abs(mod)}`, onSelect: () => {} });
-  items.push({ label: `Summe: ${summe}`, onSelect: () => {} });
-  return menuScreen({
-    title: `Würfelbecher, ${bez}, Summe ${summe}`,
-    subtitle: 'Pfeiltasten lesen die einzelnen Würfel. Escape zurück.',
-    items,
-  });
+  // Bleibt im Würfelmenü; nur eine kurze Ansage, kein neuer Bildschirm.
+  sprache.sage(`Gewürfelt, ${bez}, Ergebnis: ${wuerfe.join(', ')}${summeText}.`);
 }
 
 function charakterstatusScreen() {
@@ -106,13 +98,13 @@ function charakterstatusScreen() {
       for (const k of ['KO', 'MU', 'GE', 'KK', 'IN', 'KL', 'CH', 'FF']) {
         wrap.appendChild(infoZeile(`${ATTR_NAME[k]} ${k}: ${char.attribute[k] || 0}`));
       }
-      wrap.appendChild(infoZeile(`Wundschwelle: ${w.WS}`));
-      wrap.appendChild(infoZeile(`Magieresistenz: ${w.MR}`));
-      wrap.appendChild(infoZeile(`Geschwindigkeit: ${w.GS}`));
-      wrap.appendChild(infoZeile(`Initiative: ${w.INI}`));
-      wrap.appendChild(infoZeile(`Schadensbonus: ${w.SB}`));
-      wrap.appendChild(infoZeile(`Durchhaltevermögen: ${w.DH}`));
-      wrap.appendChild(infoZeile(`Rüstungsschutz: ${w.RS}, Behinderung: ${w.BE}`));
+      wrap.appendChild(infoZeile(`Wundschwelle: ${w.WS}`, '4 plus Konstitution durch 4, plus Rüstungsschutz.'));
+      wrap.appendChild(infoZeile(`Magieresistenz: ${w.MR}`, '4 plus Mut durch 4.'));
+      wrap.appendChild(infoZeile(`Geschwindigkeit: ${w.GS}`, '4 plus Gewandtheit durch 4, minus Behinderung.'));
+      wrap.appendChild(infoZeile(`Initiative: ${w.INI}`, 'Gleich dem Attribut Intuition.'));
+      wrap.appendChild(infoZeile(`Schadensbonus: ${w.SB}`, 'Körperkraft durch 4.'));
+      wrap.appendChild(infoZeile(`Durchhaltevermögen: ${w.DH}`, 'Konstitution minus zweimal Behinderung.'));
+      wrap.appendChild(infoZeile(`Rüstungsschutz: ${w.RS}, Behinderung: ${w.BE}`, 'Aus der ersten angelegten Rüstung.'));
 
       // Ausgerüstete Waffen, nur lesbar
       const waffen = (char.waffen || []).filter(x => x.name);
@@ -120,9 +112,10 @@ function charakterstatusScreen() {
         wrap.appendChild(abschnittTitel('Ausgerüstete Waffen'));
         for (const wa of waffen) {
           const schaden = `${wa.wuerfel || 0} W ${wa.wuerfelSeiten || 6}${wa.plus ? ` plus ${wa.plus}` : ''}`;
-          wrap.appendChild(infoZeile(`${wa.name}: Schaden ${schaden}, Reichweite ${wa.rw || 0}`));
+          wrap.appendChild(infoZeile(`${wa.name}: Schaden ${schaden}, Reichweite ${wa.rw || 0}`, `Härte ${wa.haerte || 0}.`));
         }
       }
+      verbindeDetail(wrap);
       return wrap;
     },
   };

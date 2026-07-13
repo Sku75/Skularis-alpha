@@ -6,8 +6,10 @@
 import * as editor from './editor.js';
 import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
-import { wertZeile, aktionZeile, abschnittTitel, infoZeile } from './widgets.js';
+import { wertZeile, aktionZeile, abschnittTitel, infoZeile, verbindeDetail } from './widgets.js';
 import { auswahlScreen } from '../ui/auswahl-screen.js';
+import { jaNeinDialog } from '../ui/dialog.js';
+import { fertigkeitBasiswert } from '../core/regeln.js';
 
 export function uebernatuerlichesScreen() {
   return {
@@ -36,7 +38,8 @@ export function uebernatuerlichesScreen() {
         auswahlScreen({
           titel: 'Übernatürliche Fertigkeit',
           eintraege,
-          onWahl: (val) => {
+          onWahl: async (val) => {
+            if (!await jaNeinDialog({ titel: 'Hinzufügen', frage: `${val} wirklich hinzufügen?` })) return;
             char.uebernatuerlich[val] = { wert: 0, talente: [] };
             editor.aktualisiere();
             screen.refresh();
@@ -54,8 +57,9 @@ export function uebernatuerlichesScreen() {
           const udef = db.uebernatByName[uname];
           const attrMax = udef ? Math.max(0, ...udef.attribute.map(a => char.attribute[a] || 0)) + 2 : 20;
 
+          const basis = udef ? fertigkeitBasiswert(char, udef) : 0;
           wrap.appendChild(wertZeile({
-            label: uname,
+            label: `${uname}, Basiswert ${basis}`,
             get: () => eintrag.wert,
             set: (v) => { eintrag.wert = v; },
             min: 0,
@@ -63,8 +67,19 @@ export function uebernatuerlichesScreen() {
             suffix: () => (eintrag.talente.length ? `${eintrag.talente.length} Talente` : ''),
             onChange: () => editor.epAnsage(),
             onActivate: () => import('./talente.js').then(m => screen.push(m.talentScreen(uname, true))),
+            detail: () => {
+              if (!udef) return '';
+              const b = fertigkeitBasiswert(char, udef);
+              const fw = eintrag.wert;
+              const attrText = udef.attribute.map(a => `${a} ${char.attribute[a] || 0}`).join(', ');
+              let d = `Probenwert ${b + fw} gleich Basiswert ${b} plus Fertigkeitswert ${fw}. `
+                + `Basiswert ist der gerundete Mittelwert der Attribute ${attrText}. Steigerungsfaktor ${udef.steigerungsfaktor}.`;
+              if (eintrag.talente.length) d += ` Zauber oder Liturgien: ${eintrag.talente.join(', ')}.`;
+              return d;
+            },
           }));
-          wrap.appendChild(aktionZeile(`${uname} entfernen`, () => {
+          wrap.appendChild(aktionZeile(`${uname} entfernen`, async () => {
+            if (!await jaNeinDialog({ titel: 'Entfernen', frage: `${uname} wirklich entfernen?` })) return;
             delete char.uebernatuerlich[uname];
             const f2 = editor.aktualisiere();
             screen.refresh();
@@ -73,6 +88,7 @@ export function uebernatuerlichesScreen() {
         }
       }
 
+      verbindeDetail(wrap);
       return wrap;
     },
   };

@@ -83,6 +83,7 @@ async function oeffnen(modus) {
     eintraege,
     onWahl: async (pfad) => {
       try {
+        await ladeDb(); // für Basiswerte im Charakterbogen
         const r = await ipc.abenteuerLaden(pfad);
         const a = parseAbenteuer(r.inhalt);
         a._pfad = pfad;

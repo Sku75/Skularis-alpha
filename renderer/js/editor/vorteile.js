@@ -6,8 +6,8 @@
 import * as editor from './editor.js';
 import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
-import { aktionZeile, abschnittTitel, infoZeile } from './widgets.js';
-import { zahlDialog, textDialog } from '../ui/dialog.js';
+import { aktionZeile, abschnittTitel, infoZeile, verbindeDetail } from './widgets.js';
+import { zahlDialog, textDialog, jaNeinDialog } from '../ui/dialog.js';
 import { auswahlScreen } from '../ui/auswahl-screen.js';
 import { pruefeVoraussetzungen } from '../core/regeln.js';
 
@@ -39,6 +39,7 @@ export function vorteileScreen() {
           titel: 'Vorteil wählen',
           eintraege,
           onWahl: async (gewaehlt) => {
+            if (!await jaNeinDialog({ titel: 'Hinzufügen', frage: `${gewaehlt} wirklich hinzufügen?` })) return;
             const v = db.vorteilByName[gewaehlt];
             let hinweis = '';
             if (!pruefeVoraussetzungen(char, db, v.voraussetzungen)) {
@@ -70,15 +71,18 @@ export function vorteileScreen() {
           const v = db.vorteilByName[n];
           const kosten = (typeof eintrag === 'object' && typeof eintrag.kosten === 'number') ? eintrag.kosten : (v ? v.kosten : 0);
           const komm = (typeof eintrag === 'object' && eintrag.kommentar) ? ` (${eintrag.kommentar})` : '';
-          wrap.appendChild(aktionZeile(`${n}${komm}, ${kosten} EP — entfernen`, () => {
+          const info = v ? `${v.text || ''}${v.voraussetzungen ? ` Voraussetzungen: ${v.voraussetzungen}.` : ''}`.trim() : '';
+          wrap.appendChild(aktionZeile(`${n}${komm}, ${kosten} EP — entfernen`, async () => {
+            if (!await jaNeinDialog({ titel: 'Entfernen', frage: `${n} wirklich entfernen?` })) return;
             char.vorteile = char.vorteile.filter(x => name(x) !== n);
             const f2 = editor.aktualisiere();
             screen.refresh();
             sprache.sage(`${n} entfernt, ${f2} EP frei.`);
-          }, 'Vorteil entfernen'));
+          }, 'Vorteil entfernen', info));
         }
       }
 
+      verbindeDetail(wrap);
       return wrap;
     },
   };

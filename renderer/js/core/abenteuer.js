@@ -43,8 +43,9 @@ export function createAbenteuer(char, name, charakterName, charakterPfad) {
       guertel: [],
     },
     mitspieler: [],
-    notizen: '',
-    tagebuch: [],
+    // Gemeinsamer, chronologischer Strom aus Notizen und Tagebuch-Einträgen.
+    // Jeder Eintrag: { typ:'notiz'|'tagebuch', titel, inhalt, spieltag }.
+    journal: [],
     protokoll: [],
     apGesamt: 0,
   };
@@ -64,10 +65,22 @@ export function parseAbenteuer(text) {
   a.inventar.rucksack = a.inventar.rucksack || [];
   a.inventar.guertel = a.inventar.guertel || [];
   a.mitspieler = a.mitspieler || [];
-  a.tagebuch = a.tagebuch || [];
   a.protokoll = a.protokoll || [];
-  a.notizen = a.notizen || '';
   a.apGesamt = a.apGesamt || 0;
+
+  // Journal aus altem Format (a.tagebuch[] + a.notizen-String) migrieren.
+  if (!Array.isArray(a.journal)) {
+    a.journal = [];
+    for (const e of a.tagebuch || []) {
+      a.journal.push({ typ: 'tagebuch', titel: `Spieltag ${e.spieltag}`, inhalt: e.text || '', spieltag: e.spieltag || 1 });
+    }
+    for (const z of String(a.notizen || '').split('\n').filter(Boolean)) {
+      a.journal.push({ typ: 'notiz', titel: z.slice(0, 40), inhalt: z, spieltag: a.spieltag });
+    }
+  }
+  // Alte Felder nicht mehr führen; Journal ist ab jetzt die Quelle.
+  delete a.tagebuch;
+  delete a.notizen;
   return a;
 }
 

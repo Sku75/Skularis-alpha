@@ -1,4 +1,4 @@
-# Skularis alpha 0.03
+# Skularis alpha 0.04
 
 Barrierefreie Charaktererstellung für das DSA-Hausregelsystem **Ilaris** — eine
 zugängliche Übersetzung von [Sephrasto](https://github.com/Aeolitus/Sephrasto).

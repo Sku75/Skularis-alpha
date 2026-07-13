@@ -128,6 +128,20 @@ export function gesamtEP(char, db) {
   return b;
 }
 
+/**
+ * Fertigkeits-Basiswert nach Ilaris: kaufmännisch gerundeter Mittelwert der
+ * zugeordneten Attribute. Der Probenwert ist Basiswert + Fertigkeitswert.
+ * @param {object} char  Charakter (mit char.attribute)
+ * @param {object} fdef  Fertigkeits-Definition aus der DB (mit fdef.attribute[])
+ */
+export function fertigkeitBasiswert(char, fdef) {
+  const attrs = (fdef && fdef.attribute) || [];
+  if (!attrs.length) return 0;
+  const a = char.attribute || {};
+  const summe = attrs.reduce((s, k) => s + (a[k] || 0), 0);
+  return Math.round(summe / attrs.length);
+}
+
 // --- Abgeleitete Werte (Ilaris-Formeln) ---
 
 export function getRuestungswerte(char) {

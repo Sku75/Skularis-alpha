@@ -6,8 +6,8 @@
 import * as editor from './editor.js';
 import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
-import { aktionZeile, abschnittTitel, infoZeile } from './widgets.js';
-import { textDialog } from '../ui/dialog.js';
+import { aktionZeile, abschnittTitel, infoZeile, verbindeDetail } from './widgets.js';
+import { textDialog, jaNeinDialog } from '../ui/dialog.js';
 import { auswahlScreen } from '../ui/auswahl-screen.js';
 
 function waffeAusDb(w) {
@@ -56,7 +56,8 @@ export function ausruestungScreen() {
         auswahlScreen({
           titel: 'Waffe wählen',
           eintraege,
-          onWahl: (val) => {
+          onWahl: async (val) => {
+            if (!await jaNeinDialog({ titel: 'Hinzufügen', frage: `Waffe ${val} wirklich hinzufügen?` })) return;
             const w = db.waffen.find(x => x.name === val);
             char.waffen.push(waffeAusDb(w));
             screen.refresh();
@@ -66,10 +67,12 @@ export function ausruestungScreen() {
       }, 'Aus der Waffen-Datenbank'));
       if (char.waffen.length === 0) wrap.appendChild(infoZeile('Keine Waffen.'));
       for (const w of [...char.waffen]) {
-        wrap.appendChild(aktionZeile(`Waffe ${w.name} — entfernen`, () => {
+        const info = `Schaden ${w.wuerfel || 0} W ${w.wuerfelSeiten || 6}${w.plus ? ` plus ${w.plus}` : ''}, Reichweite ${w.rw || 0}, Härte ${w.haerte || 0}.`;
+        wrap.appendChild(aktionZeile(`Waffe ${w.name} — entfernen`, async () => {
+          if (!await jaNeinDialog({ titel: 'Entfernen', frage: `Waffe ${w.name} wirklich entfernen?` })) return;
           char.waffen = char.waffen.filter(x => x !== w);
           screen.refresh(); sprache.sage(`Waffe ${w.name} entfernt.`);
-        }, 'Waffe entfernen'));
+        }, 'Waffe entfernen', info));
       }
 
       // --- Rüstungen ---
@@ -82,7 +85,8 @@ export function ausruestungScreen() {
         auswahlScreen({
           titel: 'Rüstung wählen',
           eintraege,
-          onWahl: (val) => {
+          onWahl: async (val) => {
+            if (!await jaNeinDialog({ titel: 'Hinzufügen', frage: `Rüstung ${val} wirklich hinzufügen?` })) return;
             const r = db.ruestungen.find(x => x.name === val);
             char.ruestungen.push(ruestungAusDb(r));
             editor.aktualisiere();
@@ -93,25 +97,30 @@ export function ausruestungScreen() {
       }, 'Aus der Rüstungs-Datenbank'));
       if (char.ruestungen.length === 0) wrap.appendChild(infoZeile('Keine Rüstungen.'));
       for (const r of [...char.ruestungen]) {
-        wrap.appendChild(aktionZeile(`Rüstung ${r.name}, RS-Zonen ${r.rs}, Behinderung ${r.be} — entfernen`, () => {
+        wrap.appendChild(aktionZeile(`Rüstung ${r.name}, RS-Zonen ${r.rs}, Behinderung ${r.be} — entfernen`, async () => {
+          if (!await jaNeinDialog({ titel: 'Entfernen', frage: `Rüstung ${r.name} wirklich entfernen?` })) return;
           char.ruestungen = char.ruestungen.filter(x => x !== r);
           editor.aktualisiere(); screen.refresh(); sprache.sage(`Rüstung ${r.name} entfernt.`);
-        }, 'Rüstung entfernen'));
+        }, 'Rüstung entfernen', `Rüstungsschutz-Zonen ${r.rs}, Behinderung ${r.be}.`));
       }
 
       // --- Gegenstände ---
       wrap.appendChild(aktionZeile('Gegenstand hinzufügen', async () => {
         const val = await textDialog({ titel: 'Gegenstand', label: 'Bezeichnung', wert: '' });
-        if (val && val.trim()) { char.ausruestung.push(val.trim()); screen.refresh(); sprache.sage(`${val.trim()} hinzugefügt.`); }
+        if (!val || !val.trim()) return;
+        if (!await jaNeinDialog({ titel: 'Hinzufügen', frage: `${val.trim()} wirklich hinzufügen?` })) return;
+        char.ausruestung.push(val.trim()); screen.refresh(); sprache.sage(`${val.trim()} hinzugefügt.`);
       }, 'Freier Text'));
       if (char.ausruestung.length === 0) wrap.appendChild(infoZeile('Keine Gegenstände.'));
       for (const g of [...char.ausruestung]) {
-        wrap.appendChild(aktionZeile(`${g} — entfernen`, () => {
+        wrap.appendChild(aktionZeile(`${g} — entfernen`, async () => {
+          if (!await jaNeinDialog({ titel: 'Entfernen', frage: `${g} wirklich entfernen?` })) return;
           char.ausruestung = char.ausruestung.filter(x => x !== g);
           screen.refresh(); sprache.sage(`${g} entfernt.`);
         }, 'Gegenstand entfernen'));
       }
 
+      verbindeDetail(wrap);
       return wrap;
     },
   };

@@ -7,7 +7,7 @@ import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
 import { menuScreen } from '../ui/menu-screen.js';
 import { wertZeile, aktionZeile, infoZeile, abschnittTitel } from '../editor/widgets.js';
-import { textDialog } from '../ui/dialog.js';
+import { textDialog, jaNeinDialog } from '../ui/dialog.js';
 import { protokolliere } from '../core/abenteuer.js';
 import { getAbenteuer, speichere } from './state.js';
 
@@ -61,13 +61,13 @@ function fachScreen(fach) {
 
       wrap.appendChild(aktionZeile('Gegenstand hinzufügen', async () => {
         const t = await textDialog({ titel: 'Gegenstand', label: 'Bezeichnung' });
-        if (t && t.trim()) {
-          liste.push(t.trim());
-          protokolliere(a, `${t.trim()} in ${FACH_NAME[fach]} gelegt.`);
-          await speichere();
-          screen.refresh();
-          sprache.sage(`${t.trim()} hinzugefügt.`);
-        }
+        if (!t || !t.trim()) return;
+        if (!await jaNeinDialog({ titel: 'Hinzufügen', frage: `${t.trim()} wirklich hinzufügen?` })) return;
+        liste.push(t.trim());
+        protokolliere(a, `${t.trim()} in ${FACH_NAME[fach]} gelegt.`);
+        await speichere();
+        screen.refresh();
+        sprache.sage(`${t.trim()} hinzugefügt.`);
       }, 'Freier Text'));
 
       if (liste.length === 0) {
@@ -75,6 +75,7 @@ function fachScreen(fach) {
       } else {
         for (const g of [...liste]) {
           wrap.appendChild(aktionZeile(`${g} — entfernen`, async () => {
+            if (!await jaNeinDialog({ titel: 'Entfernen', frage: `${g} wirklich entfernen?` })) return;
             a.inventar[fach] = liste.filter(x => x !== g);
             protokolliere(a, `${g} aus ${FACH_NAME[fach]} entfernt.`);
             await speichere();

@@ -1,25 +1,25 @@
 /**
  * Skularistool — Abenteuer-Bereich: Mitspieler.
- * Liste der Mitspieler-Charaktere (nur Name + Notizen, keine echten Charaktere).
- * Notizen erscheinen bei Shift und Pfeil-runter. Ganz unten Mitspieler hinzufügen.
+ * Mitspielerkarten mit Name und Zusatzinformationen. Die Zusatzinfo erscheint
+ * bei Shift und Pfeil-runter (und für Sehende im Detailbereich). Ganz oben
+ * "Mitspieler hinzufügen". Autospeichern.
  */
 import * as screen from '../ui/screen.js';
 import * as sprache from '../sprache.js';
 import { menuScreen } from '../ui/menu-screen.js';
-import { textDialog, auswahlDialog } from '../ui/dialog.js';
+import { textDialog, jaNeinDialog } from '../ui/dialog.js';
 import { getAbenteuer, speichere } from './state.js';
 
-function notizText(m) {
-  return `Notizen zum Spieler: ${m.notizenSpieler || 'keine'}. Notizen zum Charakter: ${m.notizenCharakter || 'keine'}.`;
+function zusatzText(m) {
+  return m.zusatz || [m.notizenSpieler, m.notizenCharakter].filter(Boolean).join('. ') || 'keine';
 }
 
 async function hinzufuegen() {
   const a = getAbenteuer();
-  const name = await textDialog({ titel: 'Mitspieler hinzufügen', label: 'Name des Mitspieler-Charakters' });
+  const name = await textDialog({ titel: 'Mitspieler hinzufügen', label: 'Name der Mitspielerkarte' });
   if (name === null || !name.trim()) return;
-  const notizenSpieler = (await textDialog({ titel: 'Notizen zum Spieler', label: 'Notizen zum Spieler (optional)' })) || '';
-  const notizenCharakter = (await textDialog({ titel: 'Notizen zum Charakter', label: 'Notizen zum Charakter (optional)' })) || '';
-  a.mitspieler.push({ name: name.trim(), notizenSpieler: notizenSpieler.trim(), notizenCharakter: notizenCharakter.trim() });
+  const zusatz = (await textDialog({ titel: 'Zusatzinformationen', label: 'Zusatzinformationen (optional)' })) || '';
+  a.mitspieler.push({ name: name.trim(), zusatz: zusatz.trim() });
   await speichere();
   screen.refresh();
   sprache.sage(`Mitspieler ${name.trim()} hinzugefügt.`);
@@ -30,9 +30,9 @@ function mitspielerDetail(m) {
     title: `Mitspieler ${m.name}`,
     subtitle: 'Escape zurück.',
     items: [
-      { label: 'Notizen vorlesen', detail: notizText(m), onSelect: () => sprache.sage(notizText(m)) },
+      { label: 'Zusatzinformationen vorlesen', detail: zusatzText(m), onSelect: () => sprache.sage(zusatzText(m)) },
       { label: 'Mitspieler entfernen', onSelect: async () => {
-        const ja = await auswahlDialog({ titel: `${m.name} entfernen?`, eintraege: [{ label: 'Ja, entfernen', wert: true }, { label: 'Abbrechen', wert: false }] });
+        const ja = await jaNeinDialog({ titel: 'Entfernen', frage: `${m.name} wirklich entfernen?` });
         if (!ja) return;
         const a = getAbenteuer();
         a.mitspieler = a.mitspieler.filter(x => x !== m);
@@ -49,15 +49,15 @@ export function mitspielerScreen() {
     title: 'Mitspieler',
     build() {
       const a = getAbenteuer();
-      const items = a.mitspieler.map((m, i) => ({
-        label: `Mitspieler ${m.name}`,
-        detail: notizText(m),
+      const items = a.mitspieler.map((m) => ({
+        label: `Mitspieler: ${m.name}`,
+        detail: zusatzText(m),
         onSelect: () => screen.push(mitspielerDetail(m)),
       }));
-      items.push({ label: 'Mitspieler hinzufügen', hint: 'Name und Notizen', onSelect: hinzufuegen });
+      items.push({ label: 'Mitspieler hinzufügen', hint: 'Name und Zusatzinformationen', onSelect: hinzufuegen });
       return menuScreen({
         title: obj.title,
-        subtitle: 'Shift und Pfeil-runter liest die Notizen. Escape zurück.',
+        subtitle: 'Shift und Pfeil-runter liest die Zusatzinformationen. Escape zurück.',
         items,
       }).build();
     },

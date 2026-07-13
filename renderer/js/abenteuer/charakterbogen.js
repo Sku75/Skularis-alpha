@@ -5,7 +5,8 @@
  * Ausrüstung, Erfahrung. Filter oben (Schnellauskunft). Nichts ist änderbar.
  */
 import { menuScreen } from '../ui/menu-screen.js';
-import { abgeleiteteWerte } from '../core/regeln.js';
+import { abgeleiteteWerte, fertigkeitBasiswert } from '../core/regeln.js';
+import { getDb } from '../core/db-laden.js';
 import { getAbenteuer } from './state.js';
 
 const ATTR_NAME = {
@@ -18,9 +19,28 @@ function vName(v) { return typeof v === 'string' ? v : v.name; }
 export function charakterbogenScreen() {
   const a = getAbenteuer();
   const char = a.charakter;
+  const db = getDb();
   const w = abgeleiteteWerte(char);
   const items = [];
   const eintrag = (label, detail) => items.push({ label, detail: detail || '', onSelect: () => {} });
+
+  // Fertigkeit-Zeile: Basiswert (gerundeter Mittelwert der Attribute) + Fertigkeitswert;
+  // Detail nennt Probenwert, Formel und Talente.
+  const fertigkeitEintrag = (praefix, name, fe, fdef) => {
+    const fw = fe.wert || 0;
+    const talente = (fe.talente || []);
+    if (db && fdef && fdef.attribute && fdef.attribute.length) {
+      const basis = fertigkeitBasiswert(char, fdef);
+      const attrText = fdef.attribute.map(k => `${k} ${char.attribute[k] || 0}`).join(', ');
+      const label = `${praefix} ${name}: Basiswert ${basis}, Fertigkeitswert ${fw}`;
+      let detail = `Probenwert ${basis + fw} gleich Basiswert ${basis} plus Fertigkeitswert ${fw}. `
+        + `Basiswert ist der gerundete Mittelwert der Attribute ${attrText}.`;
+      if (talente.length) detail += ` Talente: ${talente.join(', ')}.`;
+      eintrag(label, detail);
+    } else {
+      eintrag(`${praefix} ${name}: ${fw}`, talente.length ? `Talente: ${talente.join(', ')}` : '');
+    }
+  };
 
   eintrag(`Charakter: ${char.name || 'ohne Namen'}`, `Spezies ${char.spezies || 'keine'}, Heimat ${char.heimat || 'keine'}`);
   eintrag(`Erfahrung: ${char.erfahrung.gesamt} gesamt, ${char.erfahrung.ausgegeben} ausgegeben`);
@@ -40,12 +60,12 @@ export function charakterbogenScreen() {
 
   for (const [name, fe] of Object.entries(char.fertigkeiten || {})) {
     if ((fe.wert || 0) > 0 || (fe.talente && fe.talente.length)) {
-      eintrag(`Fertigkeit ${name}: ${fe.wert || 0}`, (fe.talente || []).length ? `Talente: ${fe.talente.join(', ')}` : '');
+      fertigkeitEintrag('Fertigkeit', name, fe, db && db.fertigkeitByName[name]);
     }
   }
   for (const [name, ue] of Object.entries(char.uebernatuerlich || {})) {
     if ((ue.wert || 0) > 0 || (ue.talente && ue.talente.length)) {
-      eintrag(`Übernatürlich ${name}: ${ue.wert || 0}`, (ue.talente || []).length ? `${ue.talente.join(', ')}` : '');
+      fertigkeitEintrag('Übernatürlich', name, ue, db && db.uebernatByName[name]);
     }
   }
   for (const v of char.vorteile || []) {

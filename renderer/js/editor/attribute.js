@@ -3,7 +3,7 @@
  * Acht verstellbare Wertzeilen (Pfeil links/rechts) mit Live-EP-Ansage.
  */
 import * as editor from './editor.js';
-import { wertZeile, abschnittTitel, infoZeile } from './widgets.js';
+import { wertZeile, abschnittTitel, infoZeile, verbindeDetail } from './widgets.js';
 
 export function attributeScreen() {
   return {
@@ -29,8 +29,10 @@ export function attributeScreen() {
           min: 0,
           max: 20,
           onChange: () => editor.epAnsage(),
+          detail: `${a.anzeigename} (${a.name}). Steigerungsfaktor ${a.steigerungsfaktor}.${a.text ? ' ' + a.text : ''}`,
         }));
       }
+      verbindeDetail(wrap);
       return wrap;
     },
   };

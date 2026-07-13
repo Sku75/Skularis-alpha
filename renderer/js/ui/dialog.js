@@ -97,6 +97,38 @@ export function textDialog({ titel, label, wert = '' }) {
 }
 
 /**
+ * Ja/Nein-Bestätigung. @returns Promise<boolean>
+ * Eingabetaste bestätigt (Ja), Escape bricht ab (Nein).
+ */
+export function jaNeinDialog({ titel, frage, jaLabel = 'Ja', neinLabel = 'Nein' }) {
+  return new Promise((resolve) => {
+    sounds.playClick();
+    const dlg = baueDialog(titel);
+    dlg.insertAdjacentHTML('beforeend', `
+      <div class="db-dialog__header"><span class="db-dialog__title">${titel}</span></div>
+      <div class="db-dialog__body">
+        <p class="db-dialog__label">${frage}</p>
+      </div>
+      <div class="db-dialog__footer">
+        <button class="db-btn db-btn--primary" id="dlg-ja">${jaLabel}</button>
+        <button class="db-btn" id="dlg-nein">${neinLabel}</button>
+      </div>`);
+    document.body.appendChild(dlg);
+    const fertig = (val) => { dlg.close(); dlg.remove(); resolve(val); };
+    const ja = dlg.querySelector('#dlg-ja');
+    ja.addEventListener('click', () => fertig(true));
+    dlg.querySelector('#dlg-nein').addEventListener('click', () => fertig(false));
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); fertig(true); }
+      else if (e.key === 'Escape') { e.preventDefault(); fertig(false); }
+    });
+    dlg.showModal();
+    ja.focus();
+    melde(dlg, `${frage}. ${jaLabel} oder ${neinLabel}. Eingabetaste bestätigt, Escape bricht ab.`);
+  });
+}
+
+/**
  * Auswahl aus einer Liste, mit Tipp-Filter.
  * Fokus wandert auf die Einträge (NVDA liest sie nativ vor).
  * @param {object} o
